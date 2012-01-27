@@ -50,35 +50,32 @@
     </action>
     
     <action label="scratch">
+        <fire>
+            <direction type="absolute">$1</direction>
+            <bullet>
+                <action>
+                    <vanish/>
+                </action>
+            </bullet>
+        </fire>
         <repeat>
-            <times>9999</times>
-            <action>
-                <fire>
-                    <direction type="absolute">225</direction>
-                    <bullet>
-                        <action>
-                            <vanish/>
-                        </action>
-                    </bullet>
-                </fire>
-                <repeat>
-                    <times>9</times>
-                    <actionRef label="sweep">
-                        <param>-10</param>
-                    </actionRef>
-                </repeat>
-                <repeat>
-                    <times>9</times>
-                    <actionRef label="sweep">
-                        <param>10</param>
-                    </actionRef>
-                </repeat>
-            </action>
+            <times>9</times>
+            <actionRef label="sweep">
+                <param>-10</param>
+            </actionRef>
+        </repeat>
+        <repeat>
+            <times>9</times>
+            <actionRef label="sweep">
+                <param>10</param>
+            </actionRef>
         </repeat>
     </action>
     
     <!-- Begin -->
     <action label="top">
-        <actionRef label="scratch"/>
+        <actionRef label="scratch">
+            <param>225</param>
+        </actionRef>
     </action>
 </bulletml>
