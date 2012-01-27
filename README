@@ -1,6 +1,12 @@
+# Prereqs:
+
 brew install liblo
 pip install ./pyliblo-0.9.1.tar.gz
 # Docs: http://das.nasophon.de/pyliblo/API.html and http://das.nasophon.de/pyliblo/examples.html
 
 pip install ./python-bulletml-2.tar.gz
 # Docs: http://code.google.com/p/python-bulletml/
+
+pip install PyOpenGL
+
+# Manually install pygame from the mpkg in this directory.
