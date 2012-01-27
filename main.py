@@ -101,24 +101,24 @@ def main():
         glPointSize(10)
 
         bullets.step()
-
-
         
         bp = []
+        width = height = 64
         for b in bullets:
-            bp += [[b.x, b.y,0], [b.x+10,b.y,0], [b.x+10,b.y+10,0], [b.x,b.y+10,0]]
+            bp += [[b.x, b.y, 0,  0,0], [b.x+width,b.y,0,  1,0], [b.x+width,b.y+height,0,  1,1], [b.x,b.y+height,0,  0,1]]
         
-        bullets_vbo = vbo.VBO(
-            array(bp, 'f')
-        )
-        
+        stride = 5*4
+        bullets_vbo = vbo.VBO(array(bp, 'f'))
+
         bullets_vbo.bind()
-        glBindTexture(GL_TEXTURE_2D, 0)
         glEnableClientState(GL_VERTEX_ARRAY)
-        glVertexPointerf(bullets_vbo)
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY)
+        glVertexPointer(3, GL_FLOAT, stride, bullets_vbo)
+        glTexCoordPointer(2, GL_FLOAT, stride, bullets_vbo + 3*4)
         glDrawArrays(GL_QUADS, 0, len(bp))
         bullets_vbo.unbind()
         glDisableClientState(GL_VERTEX_ARRAY)
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY)
         
         pygame.display.flip()
 
