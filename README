@@ -1,0 +1,3 @@
+brew install liblo
+pip install ./pyliblo-0.9.1.tar.gz
+# Docs: http://das.nasophon.de/pyliblo/API.html and http://das.nasophon.de/pyliblo/examples.html
