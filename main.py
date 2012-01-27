@@ -1,4 +1,6 @@
 import os
+import time
+import copy
 
 from OpenGL.GL import *
 from OpenGL.arrays import vbo
@@ -10,6 +12,7 @@ import pygame.mouse
 
 from shooter.entities.bullet import BulletSet
 from shooter.entities.player import Player
+from shooter.osc.dj import Dj
 
 
 class Image:
@@ -67,6 +70,8 @@ class Text(Image):
         self.texture_height = texttexture[4]
         self.displayList = gutil.createTexDL(self.texture, self.texture_width, self.texture_height)
 
+
+
 def main():
     player = Player()  # On your own here, but it needs x and y fields.
     player.x = 50
@@ -83,15 +88,37 @@ def main():
     
     step = 1
 
+    live_dj = Dj()
+    
+    last_dj = live_dj.snapshot()
+    last_time = time.time()
+
     while not done:
         glClear(GL_COLOR_BUFFER_BIT)
         glColor3f(1,1,1)
         glPointSize(10)
         glLoadIdentity()
+
+        current_dj = live_dj.snapshot()
+        current_time = time.time()
+
+        V = 1000 # pixels / s
+
+        td = (current_dj.right.pos - last_dj.right.pos).total_seconds() # - (current_time - last_time)
+        d = td * V
+
         
-        step += 2
-        bullets.root.x = abs(800 - step % 1600)
+        print td, d
+        
+        bullets.root.x += d
+        if bullets.root.x < 0:
+            bullets.root.x = 0
+        if bullets.root.x > swidth:
+            bullets.root.x = swidth
         bullets.step()
+        
+        last_dj = current_dj
+        last_time = current_time
         
         bp = []
         width = height = 16
@@ -117,7 +144,8 @@ def main():
         
         if bullets.collides(player):
             # Handle this less awkwardly
-            done = True
+            #done = True
+            pass
         
         bullets.cull(swidth, sheight, 100)
             

@@ -5,6 +5,8 @@ from shooter.osc.config import PORT
 from shooter.osc.server import BaseOscServer, Fader as OscFader
 from datetime import timedelta
 
+from copy import copy
+
 
 class OscServer(BaseOscServer):
     def __init__(self, dj, port):
@@ -40,6 +42,11 @@ class Record(Device):
         super(Record, self).__init__(dj)
         self.pos = timedelta(0)
 
+class DjSnapshot(object):
+    def __init__(self, dj):
+        self.left = copy(dj.left)
+        self.right = copy(dj.right)
+        self.fader = copy(dj.fader)
 
 class Dj(object):
     def __init__(self):
@@ -50,6 +57,8 @@ class Dj(object):
         self.right = Record(self)
         self.fader = Fader(self)
 
+    def snapshot(self):
+        return DjSnapshot(self)
 
 def main():
     import time
