@@ -36,7 +36,7 @@ class Fader(object):
     @property
     def right(self):
         return self._pos
- 
+
 
 class OscServer(object):
     def __init__(self, port):
