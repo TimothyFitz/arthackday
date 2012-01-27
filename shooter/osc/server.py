@@ -3,7 +3,7 @@ from functools import wraps
 import liblo
 from liblo import make_method
 from datetime import timedelta
-import logger
+from shooter import logger
 
 log = logger.logger('osc')
 
@@ -11,7 +11,7 @@ log = logger.logger('osc')
 def transform(transformer):
     def decorator(fn):
         @wraps(fn)
-        def wrapper(self, args):
+        def wrapper(self, path, args):
             (pos,) = args
             pos = transformer(pos)
             fn(self, pos)
@@ -19,7 +19,7 @@ def transform(transformer):
     return decorator
 
 def ms_transform(pos):
-    return timedelta(ms=pos)
+    return timedelta(milliseconds=pos)
 
 
 class Fader(object):
@@ -43,39 +43,51 @@ class OscServer(object):
         self._port = port
 
         try:
-            self._server = liblo.Server(port)
+            self._server = liblo.ServerThread(port)
         except liblo.ServerError, err:
             print unicode(err)
             sys.exit(1)
 
         for device, name in [('record', 'left',), 
                              ('record', 'right',),
-                             ('mixer', 'fader',),]:
+                             ('mixer', 'crossfader',),]:
             path = '/scratch/{0}/{1}'.format(device, name)
             method = getattr(self, '_' + name)
-            server.add_method(path, 'f', method)
+            self._server.add_method(path, 'f', method)
+
+        self._server.start()
 
     @transform(ms_transform)
     def _left(self, pos):
+        log.info('left: ' + str(pos))
         self.left(pos)
 
     @transform(ms_transform)
     def _right(self, pos):
+        log.info('right: ' + str(pos))
         self.right(pos)
 
     @transform(Fader)
-    def _fader(self, pos):
+    def _crossfader(self, pos):
+        log.info('fader: {0}, {1}'.format(fader.left, fader.right))
         self.fader(pos)
 
     def left(self, pos):
         ''' Absolute position in ms. '''
-        log.info('left: ' + str(pos))
 
     def right(self, pos):
         ''' Absolute position in ms. '''
-        log.info('right: ' + str(pos))
 
     def fader(self, fader):
         ''' Between 0. and 1. '''
-        log.info('fader: {0}, {1}'.format(fader.left, fader.right))
+
+
+def main():
+    from shooter.osc.config import PORT
+    server = OscServer(PORT)
+    raw_input("ctrl-c to quit\n")
+
+
+if __name__ == '__main__':
+    main()
 
