@@ -1,9 +1,10 @@
-from bulletml import Bullet, BulletML
+from bulletml import Bullet, BulletML, collision
 
 class Player(object):
     def __init__(self):
         self.x = 400
         self.y = 20
+        self.radius = 16
 
 doc = BulletML.FromDocument(open("bml/test_bullet.xml", "rU"))
 player = Player()  # On your own here, but it needs x and y fields.
@@ -28,8 +29,11 @@ class BulletList(object):
     def __iter__(self):
         return iter(self.bullets)
 
-bullets = BulletList(Bullet.FromDocument(doc, 400, 600, target=player, rank=rank))
+class MyBullet(Bullet):
+    def __init__(self, radius=8, **kwargs):
+        return Bullet.__init__(self, radius=radius, **kwargs)
 
+bullets = BulletList(MyBullet.FromDocument(doc, 400, 600, target=player, rank=rank))
 
 import pygame
 import pygame.mouse
@@ -125,6 +129,7 @@ def main():
         bullets_vbo = vbo.VBO(array(bp, 'f'))
 
         bullets_vbo.bind()
+        # Bind to texture id here (for now just cow)
         glEnableClientState(GL_VERTEX_ARRAY)
         glEnableClientState(GL_TEXTURE_COORD_ARRAY)
         glVertexPointer(3, GL_FLOAT, stride, bullets_vbo)
@@ -136,6 +141,10 @@ def main():
 
         cow.draw((player.x, player.y))
         pygame.display.flip()
+
+        if collision.collides_all(player, list(bullets)):
+            # Handle this less awkwardly
+            done = True
 
         eventlist = pygame.event.get()
         for event in eventlist:
