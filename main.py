@@ -115,7 +115,9 @@ def main():
         if bullets.collides(player):
             # Handle this less awkwardly
             done = True
-
+        
+        bullets.cull(swidth, sheight, 100)
+            
         eventlist = pygame.event.get()
         for event in eventlist:
             if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:

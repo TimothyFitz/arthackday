@@ -23,6 +23,11 @@ class BulletSet(object):
     def collides(self, other):
         return collision.collides_all(other, list(self))
     
+    def cull(self, w,h,t):
+        for bullet in self:
+            if not (-t >= bullet.x >= w+t) or not (-t >= bullet.y >= h+t):
+                bullet.finished = True
+    
     @classmethod
     def load(cls, filename, (x,y), target, rank=0.5):
         return cls(MyBullet.FromDocument(BulletML.FromDocument(open("bml/" + filename, "rU")), x,y, target=target, rank=rank))
