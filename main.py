@@ -98,7 +98,8 @@ class Text(Image):
 
 def main():
     pygame.init()
-    gutil.initializeDisplay(800, 600)
+    swidth, sheight = 800, 600
+    gutil.initializeDisplay(swidth, sheight)
 
     done = False
 
@@ -109,7 +110,8 @@ def main():
         glColor3f(1,1,1)
         glPointSize(10)
         
-        player.x, player.y = pygame.mouse.get_pos()
+        mx,my = pygame.mouse.get_pos()
+        player.x, player.y = mx, sheight - my
 
         bullets.step()
         
