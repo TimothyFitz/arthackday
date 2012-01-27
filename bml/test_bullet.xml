@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE bulletml SYSTEM "http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/bulletml.dtd">
 <bulletml type="vertical" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+    <!-- Bullets -->
     <bullet label="main">
         <action>
             <repeat>
@@ -16,7 +17,7 @@
         </action>
     </bullet>
 
-    <action label="top">
+    <action label="main">
         <repeat>
             <times>2 + $rank*1.5</times>
             <action>
@@ -27,5 +28,57 @@
             </action>
         </repeat>
         <wait>60</wait>
+    </action>
+    
+    <bullet label="sweeper">
+        <speed>10</speed>
+        <action>
+            <wait>5</wait>
+            <fire>
+                <bullet/>
+            </fire>
+            <vanish/>
+        </action>
+    </bullet>
+    
+    <action label="sweep">
+        <fire>
+            <direction type="sequence">$1</direction>
+            <bulletRef label="sweeper"/>
+        </fire>
+        <wait>5</wait>
+    </action>
+    
+    <action label="scratch">
+        <repeat>
+            <times>9999</times>
+            <action>
+                <fire>
+                    <direction type="absolute">225</direction>
+                    <bullet>
+                        <action>
+                            <vanish/>
+                        </action>
+                    </bullet>
+                </fire>
+                <repeat>
+                    <times>9</times>
+                    <actionRef label="sweep">
+                        <param>-10</param>
+                    </actionRef>
+                </repeat>
+                <repeat>
+                    <times>9</times>
+                    <actionRef label="sweep">
+                        <param>10</param>
+                    </actionRef>
+                </repeat>
+            </action>
+        </repeat>
+    </action>
+    
+    <!-- Begin -->
+    <action label="top">
+        <actionRef label="scratch"/>
     </action>
 </bulletml>
