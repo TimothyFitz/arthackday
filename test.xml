@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/bulletml.dtd">
+
+<bulletml xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+  <action label="top">
+    <actionRef label="threefire">
+      <param>10 + 20 * $rank * $rand</param>
+    </actionRef>
+  </action>
+
+  <action label="threefire">
+    <fire>
+      <bulletRef label="dropper">
+        <param>$1</param>
+        <param>0</param>
+      </bulletRef>
+      <direction>0</direction>
+    </fire>
+    <fire>
+      <bulletRef label="dropper">
+        <param>$1</param>
+        <param>-90</param>
+      </bulletRef>
+      <direction type="sequence">-90</direction>
+    </fire>
+    <fire>
+      <bulletRef label="dropper">
+        <param>$1</param>
+        <param>90</param>
+      </bulletRef>
+      <direction type="sequence">180</direction>
+    </fire>
+  </action>
+
+  <bullet label="dropper">
+    <speed>1</speed>
+    <action>
+      <wait>3</wait>
+      <changeSpeed>
+        <term>1</term>
+        <speed>0</speed>
+      </changeSpeed>
+      <changeDirection>
+        <term>1</term>
+        <direction type="relative">-$2</direction>
+      </changeDirection>
+      <wait>1</wait>
+      <repeat>
+        <times>$1</times>
+        <action>
+          <fire>
+            <bullet>
+              <direction type="relative">0</direction>
+              <speed type="absolute">1</speed>
+            </bullet>
+          </fire>
+          <wait>4</wait>
+        </action>
+      </repeat>
+      <changeSpeed>
+        <term>1</term>
+        <speed>1</speed>
+      </changeSpeed>
+    </action>
+  </bullet>
+</bulletml>
