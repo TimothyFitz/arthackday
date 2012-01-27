@@ -11,11 +11,19 @@ rank = 0.5 # Player difficulty, 0 to 1
 
 class BulletList(object):
     def __init__(self, bullet):
-        self.bullets = [bullet]
-    
+        self.bullets = set([bullet])
+
     def step(self):
+        new_bullets = set()
+        dead_bullets = set()
+
         for bullet in self.bullets:
-            self.bullets.extend(bullet.step())
+            new_bullets.update(bullet.step())
+            if bullet.finished:
+                dead_bullets.add(bullet)
+
+        self.bullets |= new_bullets
+        self.bullets -= dead_bullets
 
     def __iter__(self):
         return iter(self.bullets)
@@ -24,6 +32,7 @@ bullets = BulletList(Bullet.FromDocument(doc, 400, 600, target=player, rank=rank
 
 
 import pygame
+import pygame.mouse
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.arrays import vbo
@@ -99,11 +108,13 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT)
         glColor3f(1,1,1)
         glPointSize(10)
+        
+        player.x, player.y = pygame.mouse.get_pos()
 
         bullets.step()
         
         bp = []
-        width = height = 64
+        width = height = 16
         for b in bullets:
             bp += [[b.x, b.y, 0,  0,0], [b.x+width,b.y,0,  1,0], [b.x+width,b.y+height,0,  1,1], [b.x,b.y+height,0,  0,1]]
         
