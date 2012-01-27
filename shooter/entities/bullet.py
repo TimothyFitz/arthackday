@@ -6,6 +6,7 @@ class MyBullet(Bullet):
 
 class BulletSet(object):
     def __init__(self, bullet):
+        self.root = bullet
         self.bullets = set([bullet])
 
     def step(self):

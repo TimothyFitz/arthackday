@@ -78,6 +78,8 @@ def main():
     done = False
 
     cow = Image('cow')
+    
+    step = 1
 
     while not done:
         glClear(GL_COLOR_BUFFER_BIT)
@@ -85,9 +87,8 @@ def main():
         glPointSize(10)
         glLoadIdentity()
         
-        #mx,my = pygame.mouse.get_pos()
-        #player.x, player.y = mx, sheight - my
-
+        step += 2
+        bullets.root.x = abs(800 - step % 1600)
         bullets.step()
         
         bp = []
