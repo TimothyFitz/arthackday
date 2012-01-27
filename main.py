@@ -1,19 +1,16 @@
+import os
+
+from OpenGL.GL import *
+from OpenGL.arrays import vbo
+from numpy import array
+from pygame.locals import *
+import gutil
+import pygame
+import pygame.mouse
+
 from shooter.entities.bullet import BulletSet
 from shooter.entities.player import Player
 
-
-player = Player()  # On your own here, but it needs x and y fields.
-
-bullets = BulletSet.load("test_bullet.xml", (400,600), target=player)
-
-import pygame
-import pygame.mouse
-from pygame.locals import *
-from OpenGL.GL import *
-from OpenGL.arrays import vbo
-import gutil
-import os
-from numpy import array
 
 class Image:
     def __init__(self, texname):
@@ -70,8 +67,10 @@ class Text(Image):
         self.texture_height = texttexture[4]
         self.displayList = gutil.createTexDL(self.texture, self.texture_width, self.texture_height)
 
-
 def main():
+    player = Player()  # On your own here, but it needs x and y fields.
+    bullets = BulletSet.load("test_bullet.xml", (400,600), target=player)
+
     pygame.init()
     swidth, sheight = 800, 600
     gutil.initializeDisplay(swidth, sheight)
