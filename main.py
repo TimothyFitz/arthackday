@@ -2,29 +2,34 @@ from bulletml import Bullet, BulletML
 
 class Player(object):
     def __init__(self):
-        self.x = 0
-        self.y = 0
+        self.x = 400
+        self.y = 20
 
-doc = BulletML.FromDocument(open("test.xml", "rU"))
+doc = BulletML.FromDocument(open("bml/test_bullet.xml", "rU"))
 player = Player()  # On your own here, but it needs x and y fields.
 rank = 0.5 # Player difficulty, 0 to 1
 
-bullet = Bullet.FromDocument(doc, 1, 1, target=player, rank=rank)
-bullets = [bullet]
-
-
-for bullet in bullets:
-    bullets.extend(bullet.step())
+class BulletList(object):
+    def __init__(self, bullet):
+        self.bullets = [bullet]
     
-#print bullets
+    def step(self):
+        for bullet in self.bullets:
+            self.bullets.extend(bullet.step())
+
+    def __iter__(self):
+        return iter(self.bullets)
+
+bullets = BulletList(Bullet.FromDocument(doc, 400, 600, target=player, rank=rank))
 
 
 import pygame
 from pygame.locals import *
 from OpenGL.GL import *
+from OpenGL.arrays import vbo
 import gutil
 import os
-
+from numpy import array
 
 class Image:
     def __init__(self, texname):
@@ -42,7 +47,6 @@ class Image:
         if self.displayList != None:
             gutil.delDL(self.displayList)
             self.displayList = None
-
 
     def draw(self, pos=None, width = None, height = None, color=(1,1,1,1), rotation=0, rotationCenter=None):
         glColor4fv(color)
@@ -90,19 +94,32 @@ def main():
     done = False
 
     cow = Image('cow')
-    alien = Image('alien')
-
-    white = (255,255,255,255)
-    string1 = Text("Cow!", fontsize=256, color=white)
-    string2 = Text("Rotation!", color=white)
 
     while not done:
         glClear(GL_COLOR_BUFFER_BIT)
-        cow.draw(pos=(100,100),width=128,height=128)
-        string1.draw(pos=(100,0), width=128,height=128)
-        alien.draw(pos=(400, 400),rotation=-15,color=(.9,.3,.2,1))
-        string2.draw(pos=(600, 400), rotation=20, color=(.2,.3,.9,1))
+        glColor3f(1,1,1)
+        glPointSize(10)
 
+        bullets.step()
+
+
+        
+        bp = []
+        for b in bullets:
+            bp += [[b.x, b.y,0], [b.x+10,b.y,0], [b.x+10,b.y+10,0], [b.x,b.y+10,0]]
+        
+        bullets_vbo = vbo.VBO(
+            array(bp, 'f')
+        )
+        
+        bullets_vbo.bind()
+        glBindTexture(GL_TEXTURE_2D, 0)
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glVertexPointerf(bullets_vbo)
+        glDrawArrays(GL_QUADS, 0, len(bp))
+        bullets_vbo.unbind()
+        glDisableClientState(GL_VERTEX_ARRAY)
+        
         pygame.display.flip()
 
         eventlist = pygame.event.get()
