@@ -27,18 +27,18 @@ class Fader(object):
         ''' `pos` is between 0. and 1. '''
         if pos < 0 or pos > 1:
             raise ValueError('fader pos is out of range')
-        self._pos = pos
+        self.pos = pos
 
     @property
     def left(self):
-        return 1. - self._pos
+        return 1. - self.pos
 
     @property
     def right(self):
-        return self._pos
+        return self.pos
 
 
-class OscServer(object):
+class BaseOscServer(object):
     def __init__(self, port):
         self._port = port
 
@@ -50,7 +50,7 @@ class OscServer(object):
 
         for device, name in [('record', 'left',), 
                              ('record', 'right',),
-                             ('mixer', 'crossfader',),]:
+                             ('mixer',  'crossfader',),]:
             path = '/scratch/{0}/{1}'.format(device, name)
             method = getattr(self, '_' + name)
             self._server.add_method(path, 'f', method)
@@ -84,9 +84,8 @@ class OscServer(object):
 
 def main():
     from shooter.osc.config import PORT
-    server = OscServer(PORT)
+    server = BaseOscServer(PORT)
     raw_input("ctrl-c to quit\n")
-
 
 if __name__ == '__main__':
     main()
