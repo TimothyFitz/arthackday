@@ -69,7 +69,9 @@ class Text(Image):
 
 def main():
     player = Player()  # On your own here, but it needs x and y fields.
-    bullets = BulletSet.load("test_bullet.xml", (400,600), target=player)
+    player.x = 50
+    player.y = 300
+    bullets = BulletSet.load("gravity_attack.xml", (750,300), target=player)
 
     pygame.init()
     swidth, sheight = 800, 600
