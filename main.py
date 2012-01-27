@@ -1,39 +1,10 @@
-from bulletml import Bullet, BulletML, collision
+from shooter.entities.bullet import BulletSet
+from shooter.entities.player import Player
 
-class Player(object):
-    def __init__(self):
-        self.x = 400
-        self.y = 20
-        self.radius = 16
 
-doc = BulletML.FromDocument(open("bml/test_bullet.xml", "rU"))
 player = Player()  # On your own here, but it needs x and y fields.
-rank = 0.5 # Player difficulty, 0 to 1
 
-class BulletList(object):
-    def __init__(self, bullet):
-        self.bullets = set([bullet])
-
-    def step(self):
-        new_bullets = set()
-        dead_bullets = set()
-
-        for bullet in self.bullets:
-            new_bullets.update(bullet.step())
-            if bullet.finished:
-                dead_bullets.add(bullet)
-
-        self.bullets |= new_bullets
-        self.bullets -= dead_bullets
-
-    def __iter__(self):
-        return iter(self.bullets)
-
-class MyBullet(Bullet):
-    def __init__(self, radius=8, **kwargs):
-        return Bullet.__init__(self, radius=radius, **kwargs)
-
-bullets = BulletList(MyBullet.FromDocument(doc, 400, 600, target=player, rank=rank))
+bullets = BulletSet.load("test_bullet.xml", (400,600), target=player)
 
 import pygame
 import pygame.mouse
@@ -141,8 +112,8 @@ def main():
 
         cow.draw((player.x, player.y))
         pygame.display.flip()
-
-        if collision.collides_all(player, list(bullets)):
+        
+        if bullets.collides(player):
             # Handle this less awkwardly
             done = True
 
