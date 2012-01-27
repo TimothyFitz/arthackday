@@ -109,9 +109,10 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT)
         glColor3f(1,1,1)
         glPointSize(10)
+        glLoadIdentity()
         
-        mx,my = pygame.mouse.get_pos()
-        player.x, player.y = mx, sheight - my
+        #mx,my = pygame.mouse.get_pos()
+        #player.x, player.y = mx, sheight - my
 
         bullets.step()
         
@@ -132,14 +133,25 @@ def main():
         bullets_vbo.unbind()
         glDisableClientState(GL_VERTEX_ARRAY)
         glDisableClientState(GL_TEXTURE_COORD_ARRAY)
-        
+
+        cow.draw((player.x, player.y))
         pygame.display.flip()
 
         eventlist = pygame.event.get()
         for event in eventlist:
-            if event.type == QUIT \
-               or event.type == KEYDOWN and event.key == K_ESCAPE:
+            if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                 done = True
+
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_RIGHT]:
+            player.x += 1
+        elif keys[pygame.K_LEFT]:
+            player.x -= 1
+        elif keys[pygame.K_UP]:
+            player.y += 1
+        elif keys[pygame.K_DOWN]:
+            player.y -= 1
 
 if __name__ == '__main__':
     main()
