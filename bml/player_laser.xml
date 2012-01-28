@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/bulletml.dtd">
+<bulletml type="horizontal" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+    
+    <fire label="laser_head">
+        <tag>texture=player_laser_head</tag>
+        <direction type="absolute">90</direction>
+        <speed>20</speed>
+        <bullet/>
+    </fire>
+    
+    <fire label="laser_stream">
+        <tag>texture=player_laser_stream</tag>
+        <direction type="absolute">90</direction>
+        <speed>20</speed>
+        <bullet/>
+    </fire>
+    
+    <action label="throw">
+        <fireRef label="laser_stream"/>
+        <wait>2</wait>
+    </action>
+
+    <!-- Begin -->
+    <action label="top">
+        <repeat>
+            <times>100</times>
+            <actionRef label="throw"/>
+        </repeat>
+    </action>
+</bulletml>

@@ -1,12 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE bulletml SYSTEM "http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/bulletml.dtd">
 <bulletml type="horizontal" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
-
     
     <action label="throw">
         <fire>
             <tag>texture=bullets/12px-blue-round</tag>
-            <direction>0</direction>
+            <direction type="absolute">90</direction>
             <speed>12</speed>
             <bullet>
             </bullet>
