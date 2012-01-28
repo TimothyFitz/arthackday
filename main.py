@@ -29,7 +29,7 @@ SHOT_EFFECT_FRAMES = 10
 
 HIT_EFFECT_FRAMES = 1
 
-GAME_OVER_FRAMES = 120
+GAME_OVER_FRAMES = 240
 
 swidth, sheight = 848, 480
 
@@ -54,7 +54,7 @@ class RenderPass(object):
             for thing in things:
                 colors = (1., 1., 1.,)
                 global steps
-                if hasattr(thing, 'last_hit_step') and steps - HIT_EFFECT_FRAMES <= thing.last_hit_step:
+                if hasattr(thing, 'last_hit_step') and steps - HIT_EFFECT_FRAMES <= thing.last_hit_step and steps % 5:
                     colors = (1., .2, .2,)
                 points += [
                     [thing.x - hw, thing.y - hh, thing.z,  0,0, colors[0], colors[1], colors[2]],
@@ -207,6 +207,8 @@ def main():
     last_shot_step = None
     last_game_over = -GAME_OVER_FRAMES - 1
 
+    last_boss_break_step = None
+
     def start_screen_visible():
         return last_game_over is not None and steps - last_game_over > GAME_OVER_FRAMES
 
@@ -315,6 +317,16 @@ def main():
             last_twilio_msg_step = steps
             last_twilio_msg = msg
 
+        # Boss movement.
+        #print live_dj.activity_level()
+        #print 75. / (live_dj.activity_level() + 1)
+        if live_dj.activity_level() > 2 or abs(boss.x - boss.starting_x) > 3:
+            if last_boss_break_step is None:
+                last_boss_break_step = steps
+            boss.x = int(math.cos((steps - last_boss_break_step + 30) / 30.) * 50 + boss.starting_x)
+        else:
+            last_boss_break_step = None
+
         boss.y = math.sin(steps / 75.) * 110 + (sheight / 2)
 
         pygame.display.flip()
@@ -375,7 +387,7 @@ def main():
                 player.health = 100.
                 boss.health = 100.
                 last_game_over = None
-        
+
             if keys[pygame.K_q]:
                 time.sleep(1)
 
