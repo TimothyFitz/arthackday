@@ -5,15 +5,15 @@
     <action label="gravity">
         <changeDirection>
             <direction type="absolute">180</direction>
-            <term>150 + $rand*50</term>
+            <term>100 + $rand*25</term>
         </changeDirection>
     </action>
     
     <action label="throw">
         <fire>
-            <tag>texture=bullets/12px-green-round</tag>
+            <tag>texture=bullet_default</tag>
             <direction type="aim">15 + $rand*60</direction>
-            <speed>1</speed>
+            <speed>7</speed>
             <bullet>
                 <action>
                     <actionRef label="gravity"/>
