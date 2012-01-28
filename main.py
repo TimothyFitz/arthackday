@@ -19,6 +19,7 @@ from shooter.images import Image, Text
 from shooter.controller import JoystickServer
 from shooter.texture import Texture
 from shooter.sms import MessagePoll, TWILIO_MSG_DURATION
+from shooter.hitboxes import hitboxes
 
 PLAYER_ATTACK = .5
 BOSS_ATTACK = .7
@@ -87,6 +88,12 @@ def draw_label(label, x, y, width, height, rotation=0):
     if label not in _texts:
         _texts[label] = Text(label, fontsize=256, color=(255,255,255,255))
     _texts[label].draw(pos=(x, y), width=width, height=height, rotation=rotation)
+
+class HitBox(object):
+    def __init__(self, entity, json):
+        self.x = entity.x + json['offset']['x']
+        self.y = entity.y + json['offset']['y']
+        self.radius = json['radius']
 
 def main():
     pygame.init()
@@ -202,11 +209,15 @@ def main():
         while time_left >= game_tick:
             time_left -= game_tick
 
-            if enemy_bullets.collides(player):
-                player.health -= BOSS_ATTACK
+            for hitbox in hitboxes['boss_ship'].values():
+                hitbox = HitBox(player, hitbox)
+                if enemy_bullets.collides(hitbox):
+                    player.health -= BOSS_ATTACK
 
-            if player_bullets.collides(boss):
-                boss.health -= PLAYER_ATTACK
+            for hitbox in hitboxes['boss_ship'].values():
+                hitbox = HitBox(boss, hitbox)
+                if player_bullets.collides(hitbox):
+                    boss.health -= PLAYER_ATTACK
 
             enemy_bullets.step(swidth, sheight, 100)
             player_bullets.step(swidth, sheight, 100)
@@ -251,7 +262,7 @@ def main():
         
             steps += 1
         
-            if steps % 120 == 0:
+            if steps % 15 == 0:
                 activity_level = live_dj.activity_level()
                 if activity_level:
                     enemy_bullets.load(boss_weapons[activity_level], source=boss, target=player)
