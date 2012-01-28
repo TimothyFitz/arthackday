@@ -132,7 +132,7 @@ def main():
     player_bullets = BulletSet()
     
     space = [Texture("bg/space_%s" % n, z=-100) for n in range(1, 32)]
-    
+
     class Background(object):
         def __init__(self):
             self.x = swidth // 2
@@ -144,8 +144,7 @@ def main():
             return space[(steps//15) % len(space)]
             
     bg = Background()
-            
-    
+
     boss_weapons = [
         None,
         'easy_attack_1.xml',
