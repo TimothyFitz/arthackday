@@ -1,8 +1,13 @@
 from shooter.images import Text
 from shooter.texture import Texture
 
-class Player(object):
+class Character(object):
     def __init__(self):
+        self.health = 100
+
+class Player(Character):
+    def __init__(self):
+        super(Player, self).__init__()
         self.x = 50
         self.y = 300
         self.vx = 4
@@ -10,9 +15,8 @@ class Player(object):
         self.radius = 16
         self.texture = Texture("player_ship")
 
-        self.health = 100
-        self._last_health = self.health
         self._health_text = None
+        #self._last_health = self.health
 
     #@property
     #def health_text(self):
@@ -22,8 +26,9 @@ class Player(object):
     #                                 color=(255,255,255,255))
     #    return self._health_text
 
-class Boss(object):
+class Boss(Character):
     def __init__(self):
+        super(Boss, self).__init__()
         self.x = 750
         self.y = 330
         self.texture = Texture("player_ship")
