@@ -212,10 +212,6 @@ def main():
         return last_game_over is not None and steps - last_game_over > GAME_OVER_FRAMES
 
     while not done:
-        if joy.state.hats:
-            hx, hy = joy.state.hats[0]
-            move_player(player, hx, hy)
-
         keys = pygame.key.get_pressed()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         glColor3f(1,1,1)
@@ -372,6 +368,10 @@ def main():
             gun.step()
             laser.step()
 
+            if joy.state.hats:
+                hx, hy = joy.state.hats[0]
+                move_player(player, hx, hy)
+
             if keys[pygame.K_RIGHT]:
                 move_player(player, 1, 0)
             elif keys[pygame.K_LEFT]:
@@ -382,7 +382,7 @@ def main():
             elif keys[pygame.K_DOWN]:
                 move_player(player, 0, -1)
 
-            if start_screen_visible() and keys[pygame.K_RETURN] and (player.health <= 0 or boss.health <= 0):
+            if start_screen_visible() and (keys[pygame.K_RETURN] or joy.state.buttons and joy.state.buttons[7]) and (player.health <= 0 or boss.health <= 0):
                 player.health = 100.
                 boss.health = 100.
                 last_game_over = None
