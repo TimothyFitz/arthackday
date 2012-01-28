@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/bulletml.dtd">
+<bulletml type="horizontal" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+    
+    <bullet label="sweep_bullet">
+        <speed>4</speed>
+        <action>
+            <wait>40</wait>
+            <changeDirection>
+                <direction type="aim">$rand * 2</direction>
+                <term>0</term>
+            </changeDirection>
+            <changeSpeed>
+                <speed>10</speed>
+                <term>0</term>
+            </changeSpeed>
+        </action>
+    </bullet>
+    
+    <action label="sweep">
+        <fire>
+            <direction type="absolute">$1</direction>
+            <bullet/>
+        </fire>
+        <repeat>
+            <times>18</times>
+            <action>
+                <fire>
+                    <tag>texture=bullet_default</tag>
+                    <direction type="sequence">-10</direction>
+                    <bulletRef label="sweep_bullet"/>
+                </fire>
+                <wait>0</wait>
+            </action>
+        </repeat>
+        <wait>15</wait>
+    </action>
+    
+    <!-- Begin -->
+    <action label="top">
+        <repeat>
+            <times>10</times>
+            <actionRef label="sweep">
+                <param>350</param>
+            </actionRef>
+        </repeat>
+    </action>
+</bulletml>

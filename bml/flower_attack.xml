@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/bulletml.dtd">
+<bulletml type="horizontal" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+    
+    <action label="pop">
+        <repeat>
+            <times>8</times>
+            <action>
+                <fire>
+                    <tag>texture=bullet_default</tag>
+                    <direction type="sequence">40</direction>
+                    <speed>5</speed>
+                    <bullet/>
+                </fire>
+            </action>
+        </repeat>
+    </action>
+    
+    <bullet label="flower">
+        <speed>50</speed>
+        <action>
+            <wait>7</wait>
+            <changeSpeed>
+                <speed>0</speed>
+                <term>0</term>
+            </changeSpeed>
+            <actionRef label="pop"/>
+            <fire>
+                <direction type="aim">-20</direction>
+                <bullet>
+                    <action>
+                        <vanish/>
+                    </action>
+                </bullet>
+            </fire>
+            <repeat>
+                <times>100</times>
+                <action>
+                    <fire>
+                        <tag>texture=bullet_default</tag>
+                        <direction type="sequence">20</direction>
+                        <bullet/>
+                    </fire>
+                    <wait>3</wait>
+                </action>
+            </repeat>
+            <vanish/>
+        </action>
+    </bullet>
+    
+    <action label="launch_flowers">
+        <fire>
+            <direction type="absolute">240</direction>
+            <bullet/>
+        </fire>
+        <repeat>
+            <times>5</times>
+            <action>
+                <fire>
+                    <direction type="sequence">10</direction>
+                    <bulletRef label="flower"/>
+                </fire>
+                <wait>5</wait>
+            </action>
+        </repeat>
+    </action>
+    
+    <!-- Begin in this action -->
+    <action label="top">
+        <actionRef label="launch_flowers"/>
+    </action>
+</bulletml>

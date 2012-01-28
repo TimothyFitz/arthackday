@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/bulletml.dtd">
+<bulletml type="horizontal" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+    
+    <fire label="laser_fire">
+        <tag>texture=bullet_default</tag>
+        <offset type="absolute">
+            <x>30</x>
+            <y>$1</y>
+        </offset>
+        <direction type="absolute">270</direction>
+        <speed>20</speed>
+        <bullet/>
+    </fire>
+    
+    <action label="laser">
+        <repeat>
+            <times>100</times>
+            <action>
+                <fireRef label="laser_fire">
+                    <param>75</param>
+                </fireRef>
+                <fireRef label="laser_fire">
+                    <param>-75</param>
+                </fireRef>
+                <wait>0</wait>
+            </action>
+        </repeat>
+    </action>
+    
+    <!-- Begin in this action -->
+    <action label="top">
+        <actionRef label="laser"/>
+    </action>
+</bulletml>

@@ -4,7 +4,7 @@
     
     <fire label="spawn_bullets">
         <tag>texture=bullet_default</tag>
-        <direction type="sequence">40</direction>
+        <direction type="sequence">20</direction>
         <speed>2</speed>
         <bullet/>
     </fire>
