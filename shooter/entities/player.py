@@ -17,8 +17,10 @@ class Flame(object):
 class MuzzleFlash(object):
     def __init__(self):
         self.x, self.y = 0, 0
-        self.z = .5
-        self.texture = Texture("player_shot_effect_1", z=1.)
+        self.z = .6
+        self.texture = Texture("player_shot_effect_1", z=.6)
+        self.textures = [Texture('player_shot_effect_1', z=.6), Texture('player_shot_effect_2', z=.6), Texture('player_shot_effect_3', z=.6)]
+        self.current_texture_index = 0
 
 class Player(Character):
     def __init__(self):

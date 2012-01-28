@@ -25,7 +25,7 @@ PLAYER_ATTACK = .1
 BOSS_ATTACK = .06
 TWILIO_ATTACK = 8.
 
-SHOT_EFFECT_FRAMES = 5
+SHOT_EFFECT_FRAMES = 10
 
 HIT_EFFECT_FRAMES = 1
 
@@ -181,6 +181,12 @@ def main():
     last_shot_step = None
 
     while not done:
+        if joy.state.hats:
+            hx, hy = joy.state.hats[0]
+            player.x += hx*player.vx
+            player.y += hy*player.vy
+
+        keys = pygame.key.get_pressed()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         glColor3f(1,1,1)
         glPointSize(10)
@@ -190,11 +196,17 @@ def main():
         map(rp.mark_for_draw, enemy_bullets)
         map(rp.mark_for_draw, player_bullets)
 
-        if last_shot_step is not None and (steps - last_shot_step) % (SHOT_EFFECT_FRAMES):
-            if steps % 3:
-                muzzle_flash.x = player.x + 62
-                muzzle_flash.y = player.y + 6
-                rp.mark_for_draw(muzzle_flash)
+        #if last_shot_step is not None and (steps - last_shot_step) % (SHOT_EFFECT_FRAMES):
+        if (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
+            #if steps % 3:
+            muzzle_flash.x = player.x + 62
+            muzzle_flash.y = player.y + 6
+            if steps % 2 == 0:
+                muzzle_flash.current_texture_index += 1
+                if muzzle_flash.current_texture_index >= len(muzzle_flash.textures):
+                    muzzle_flash.current_texture_index = 0
+            muzzle_flash.texture = muzzle_flash.textures[muzzle_flash.current_texture_index]
+            rp.mark_for_draw(muzzle_flash)
         else:
             last_shot_step = None
 
@@ -297,20 +309,13 @@ def main():
             for event in eventlist:
                 if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                     done = True
-                
-            if joy.state.hats:
-                hx, hy = joy.state.hats[0]
-                player.x += hx*player.vx
-                player.y += hy*player.vy
-
-            keys = pygame.key.get_pressed()
         
-            if (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
+            if player.health > 0 and (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
                 if gun.fire():
                     player_bullets.load("player_shot.xml", source=player, target=boss)
                     last_shot_step = steps
         
-            if (joy.state.buttons and joy.state.buttons[1]) or keys[pygame.K_x]:
+            if player.health > 0 and (joy.state.buttons and joy.state.buttons[1]) or keys[pygame.K_x]:
                 if laser.fire():
                     player_bullets.load("player_laser.xml", source=player, target=boss)
 
@@ -336,7 +341,7 @@ def main():
         
             if keys[pygame.K_q]:
                 time.sleep(1)
-        
+
             steps += 1
         
             if steps % 15 == 0:
