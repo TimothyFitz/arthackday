@@ -106,12 +106,12 @@ def main():
     
     boss_weapons = [
         None,
-        'flower_attack.xml',
+        'spread_attack.xml',
+        'laser_attack.xml',
         'gravity_attack.xml',
         'homing_laser.xml',
-        'laser_attack.xml',
-        'spread_attack.xml',
         'sweep_attack.xml',
+        'flower_attack.xml',
     ]
 
     steps = 0
