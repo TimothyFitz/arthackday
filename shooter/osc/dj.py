@@ -72,7 +72,7 @@ class DirChangeMixin(object):
 
     def activity_level(self):
         #print self, self.dir_changes()
-        for level, changes_per_s in enumerate(config.DIR_CHANGE_BUCKETS):
+        for level, changes_per_s in enumerate([v*config.DJ_DIFFICULTY for v in config.DIR_CHANGE_BUCKETS]):
             if self.dir_changes() / float(config.DIR_CHANGE_SECONDS) < changes_per_s:
                 return level
         return level + 1
@@ -131,7 +131,7 @@ class Dj(object):
 
     def activity_level(self):
         level = self.right.activity_level() # + self.fader.activity_level()
-        return int(level * config.DJ_DIFFICULTY)
+        return int(level)
 
 
 def main():
