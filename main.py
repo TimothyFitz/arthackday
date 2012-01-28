@@ -169,6 +169,9 @@ def main():
         elif keys[pygame.K_DOWN]:
             player.y -= player.vy
         
+        if keys[pygame.K_q]:
+            time.sleep(1)
+        
         steps += 1
     
     print "FPS:", steps / (time.time() - start)
