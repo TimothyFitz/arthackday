@@ -3,8 +3,8 @@ from shooter.texture import Texture
 
 class Player(object):
     def __init__(self):
-        self.x = 400
-        self.y = 20
+        self.x = 50
+        self.y = 300
         self.radius = 16
         self.texture = Texture("alien")
 
@@ -20,3 +20,8 @@ class Player(object):
                                      color=(255,255,255,255))
         return self._health_text
 
+class Boss(object):
+    def __init__(self):
+        self.x = 750
+        self.y = 330
+        self.texture = None

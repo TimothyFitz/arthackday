@@ -14,9 +14,8 @@ class MyBullet(Bullet):
             self.texture = None
 
 class BulletSet(object):
-    def __init__(self, bullet):
-        self.root = bullet
-        self.bullets = set([bullet])
+    def __init__(self):
+        self.bullets = set()
 
     def step(self):
         new_bullets = set()
@@ -38,9 +37,8 @@ class BulletSet(object):
             if not (-t >= bullet.x >= w+t) or not (-t >= bullet.y >= h+t):
                 bullet.finished = True
 
-    @classmethod
-    def load(cls, filename, (x,y), target, rank=0.5):
-        return cls(MyBullet.FromDocument(BulletML.FromDocument(open("bml/" + filename, "rU")), x,y, target=target, rank=rank))
+    def load(self, filename, source, target, rank=0.5):
+        self.bullets.add(MyBullet.FromDocument(BulletML.FromDocument(open("bml/" + filename, "rU")), source.x, source.y, target=target, rank=rank))
 
     def __iter__(self):
         return iter(self.bullets)
