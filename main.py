@@ -13,7 +13,7 @@ import pygame
 import pygame.mouse
 
 from shooter.entities.bullet import BulletSet
-from shooter.entities.player import Player, Boss, MuzzleFlash
+from shooter.entities.player import Player, Boss, MuzzleFlash, Flame
 from shooter.osc.dj import Dj
 from shooter.images import Image, Text
 from shooter.controller import JoystickServer
@@ -39,7 +39,8 @@ class RenderPass(object):
             self.draw_by_texture[thing.texture].add(thing)
     
     def render(self):
-        for texture, things in self.draw_by_texture.items():
+        for texture, things in sorted(self.draw_by_texture.items(),
+                                      key=lambda (texture, things): texture.z):
             glLoadIdentity()
             points = []
             hw, hh = texture.width // 2, texture.height // 2
@@ -109,6 +110,7 @@ def main():
     player = Player()  # On your own here, but it needs x and y fields.
     boss = Boss()
     muzzle_flash = MuzzleFlash()
+    flame = Flame()
     enemy_bullets = BulletSet()
 
     player_bullets = BulletSet()
@@ -176,7 +178,17 @@ def main():
         else:
             last_shot_step = None
 
+        # Flame.
+        flame.x = player.x - 8
+        flame.y = player.y
+        if steps % 4 == 0:
+            flame.current_texture_index += 1
+            if flame.current_texture_index >= len(flame.textures):
+                flame.current_texture_index = 0
+        flame.texture = flame.textures[flame.current_texture_index]
+
         rp.mark_for_draw(player)
+        rp.mark_for_draw(flame)
         rp.mark_for_draw(boss)
 
         rp.render()

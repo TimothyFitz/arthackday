@@ -5,11 +5,19 @@ class Character(object):
     def __init__(self):
         self.health = 100
 
+class Flame(object):
+    def __init__(self):
+        self.x, self.y = 0, 0
+        self.z = .1
+        self.texture = Texture('player_flame_1', z=.5)
+        self.textures = [Texture('player_flame_1', z=.5), Texture('player_flame_2', z=.5), Texture('player_flame_3', z=.5)]
+        self.current_texture_index = 0
+
 class MuzzleFlash(object):
     def __init__(self):
         self.x, self.y = 0, 0
-        self.z = .99
-        self.texture = Texture("player_shot_effect")
+        self.z = .5
+        self.texture = Texture("player_shot_effect", z=1.)
 
 class Player(Character):
     def __init__(self):
@@ -22,7 +30,7 @@ class Player(Character):
         self.z = .99
 
         self.radius = 16
-        self.texture = Texture("player_ship")
+        self.texture = Texture("player_ship", z=.8)
 
         self._health_text = None
         #self._last_health = self.health

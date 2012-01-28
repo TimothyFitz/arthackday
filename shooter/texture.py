@@ -3,9 +3,11 @@ import os.path
 import gutil
 
 class _Texture(object):
-    def __init__(self, texname):
+    def __init__(self, texname, z):
         filename = os.path.join('data', texname)
         filename += ".png"
+
+        self.z = z
 
         self.id, self.width, self.height = gutil.loadImage(filename)
 
@@ -15,9 +17,9 @@ class _Texture(object):
             self.id = None
 
 TEXTURES = {}
-def Texture(texname):
+def Texture(texname, z=1.):
     try:
         return TEXTURES[texname]
     except KeyError:
-        tex = TEXTURES[texname] = _Texture(texname)
+        tex = TEXTURES[texname] = _Texture(texname, z)
         return tex
