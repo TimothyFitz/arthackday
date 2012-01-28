@@ -41,7 +41,7 @@
                 </changeSpeed>
                 <wait>60</wait>
                 <repeat>
-                    <times>5</times>
+                    <times>3</times>
                     <action>
                         <fireRef label="spawn_bullets"/>
                     </action>
