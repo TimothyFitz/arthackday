@@ -18,7 +18,7 @@ class MuzzleFlash(object):
     def __init__(self):
         self.x, self.y = 0, 0
         self.z = .5
-        self.texture = Texture("player_shot_effect", z=1.)
+        self.texture = Texture("player_shot_effect_1", z=1.)
 
 class Player(Character):
     def __init__(self):
