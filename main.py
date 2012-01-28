@@ -120,7 +120,7 @@ def main():
         draw_health_bar(player.health / 100., sheight - 30, (0., 0.8, 0.))
         draw_health_bar(boss.health / 100., 10, (0.8, 0., 0.))
         draw_label("PLAYER", 15, sheight - 29, 52, 16)
-        draw_label("BOSS", 15, 11, 34, 16)
+        draw_label("BOSS", 15, 11, 35, 16)
 
         # Twilio.
         TWILIO_WIDTH = (210, 260,)
