@@ -16,7 +16,7 @@
     
     <action label="laser">
         <repeat>
-            <times>100</times>
+            <times>10</times>
             <action>
                 <fireRef label="laser_fire">
                     <param>75</param>

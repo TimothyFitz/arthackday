@@ -35,7 +35,7 @@
                 </bullet>
             </fire>
             <repeat>
-                <times>100</times>
+                <times>10</times>
                 <action>
                     <fire>
                         <tag>texture=bullet_default</tag>

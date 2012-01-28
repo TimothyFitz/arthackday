@@ -47,7 +47,7 @@
     <!-- Begin -->
     <action label="top">
         <repeat>
-            <times>10</times>
+            <times>1</times>
             <actionRef label="sweep">
                 <param>350</param>
             </actionRef>

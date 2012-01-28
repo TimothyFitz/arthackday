@@ -42,7 +42,7 @@
     <!-- Begin in this action -->
     <action label="top">
         <repeat>
-            <times>10</times>
+            <times>1</times>
             <actionRef label="double_spread"/>
         </repeat>
     </action>

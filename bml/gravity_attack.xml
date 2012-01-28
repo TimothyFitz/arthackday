@@ -27,7 +27,7 @@
     <!-- Begin -->
     <action label="top">
         <repeat>
-            <times>100</times>
+            <times>25</times>
             <actionRef label="throw"/>
         </repeat>
     </action>

@@ -86,7 +86,7 @@
     <!-- Begin in this action -->
     <action label="top">
         <repeat>
-            <times>4</times>
+            <times>1</times>
             <action>
                 <actionRef label="homing_beam_lower"/>
                 <actionRef label="homing_beam_upper"/>
