@@ -2,8 +2,16 @@
 <!DOCTYPE bulletml SYSTEM "http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/bulletml.dtd">
 <bulletml type="horizontal" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
     
+    <fire label="spawn_bullets">
+        <tag>texture=bullet_default</tag>
+        <direction type="sequence">40</direction>
+        <speed>2</speed>
+        <bullet/>
+    </fire>
+    
     <fire label="single_bullet">
-        <direction type="absolute">90</direction>
+        <tag>texture=bullet_default</tag>
+        <direction type="absolute">20</direction>
         <speed>5</speed>
         <bullet>
             <action>
@@ -13,18 +21,25 @@
                 </changeDirection>
                 <wait>20</wait>
                 <changeDirection>
-                    <direction type="aim">0</direction>
+                    <direction type="absolute">$2</direction>
                     <term>20</term>
                 </changeDirection>
                 <changeSpeed>
-                    <speed>1</speed>
+                    <speed>2</speed>
                     <term>20</term>
                 </changeSpeed>
                 <wait>20</wait>
                 <changeSpeed>
-                    <speed>10</speed>
-                    <term>40</term>
+                    <speed>25</speed>
+                    <term>60</term>
                 </changeSpeed>
+                <wait>60</wait>
+                <repeat>
+                    <times>9</times>
+                    <action>
+                        <fireRef label="spawn_bullets"/>
+                    </action>
+                </repeat>
             </action>
         </bullet>
     </fire>
@@ -34,7 +49,8 @@
             <times>10</times>
             <action>
                 <fireRef label="single_bullet">
-                    <param>180</param>
+                    <param>$1</param>
+                    <param>$2 + $3*5</param>
                 </fireRef>
                 <wait>0</wait>
             </action>
@@ -44,12 +60,16 @@
     <action label="homing_beam_lower">
         <actionRef label="homing_beam">
             <param>180</param>
+            <param>270</param>
+            <param>$rand</param>
         </actionRef>
     </action>
     
-    <action label="homing_beam_lower">
+    <action label="homing_beam_upper">
         <actionRef label="homing_beam">
             <param>0</param>
+            <param>255</param>
+            <param>$rand</param>
         </actionRef>
     </action>
         
@@ -57,9 +77,10 @@
     <!-- Begin in this action -->
     <action label="top">
         <repeat>
-            <times>20</times>
+            <times>4</times>
             <action>
-                <actionRef label="homing_beam"/>
+                <actionRef label="homing_beam_lower"/>
+                <actionRef label="homing_beam_upper"/>
                 <wait>30</wait>
             </action>
         </repeat>
