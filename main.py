@@ -136,11 +136,11 @@ def main():
 
         keys = pygame.key.get_pressed()
         
-        if joy.state.buttons[0] or keys[pygame.K_z]:
+        if (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
             if gun.fire():
                 player_bullets.load("player_shot.xml", source=player, target=boss)
         
-        if joy.state.buttons[1] or keys[pygame.K_x]:
+        if (joy.state.buttons and joy.state.buttons[1]) or keys[pygame.K_x]:
             if laser.fire():
                 player_bullets.load("player_laser.xml", source=player, target=boss)
 

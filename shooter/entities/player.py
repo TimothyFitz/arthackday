@@ -8,7 +8,7 @@ class Player(object):
         self.vx = 4
         self.vy = 4
         self.radius = 16
-        self.texture = Texture("alien")
+        self.texture = Texture("player_ship")
 
         self.health = 100
         self._last_health = self.health
