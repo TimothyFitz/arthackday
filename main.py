@@ -135,6 +135,7 @@ def main():
     player_bullets = BulletSet()
     
     space = [Texture("bg/space_%s" % n, z=-100) for n in range(1, 32)]
+    start_screens = [Texture("start_screen_%s" % n, z=-100) for n in range(1, 3)]
 
     class Background(object):
         def __init__(self):
@@ -148,17 +149,18 @@ def main():
             
     bg = Background()
 
-    class StarScreen(object):
+    class StartScreen(object):
         def __init__(self):
             self.x = swidth // 2
             self.y = sheight // 2
             self.z = 0
+            self.current_texture_index = 0
 
         @property
         def texture(self):
-            return Texture('bg/space_1')
+            return start_screens[(steps//30) % len(start_screens)]
 
-    start_screen = StarScreen()
+    start_screen = StartScreen()
 
     boss_weapons = [
         None,
@@ -213,8 +215,7 @@ def main():
 
         rp = RenderPass()
 
-        #if last_shot_step is not None and (steps - last_shot_step) % (SHOT_EFFECT_FRAMES):
-        if (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
+        if not start_screen_visible() and (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
             #if steps % 3:
             muzzle_flash.x = player.x + 85
             muzzle_flash.y = player.y + 6
@@ -270,10 +271,11 @@ def main():
             draw_label("BOSS", 15, 11, 35, 16)
 
         # Twilio.
-        TWILIO_WIDTH = (210, 260,)
-        draw_label("Tired of this DJ? Shoot him.",
-                   swidth - TWILIO_WIDTH[0] - 10, 60, TWILIO_WIDTH[0], 16)
-        draw_label("TEXT  (503) 8-CANVAS", swidth - TWILIO_WIDTH[1] - 10, 34, TWILIO_WIDTH[1], 23)        
+        if not start_screen_visible():
+            TWILIO_WIDTH = (210, 260,)
+            draw_label("Tired of this DJ? Shoot him.",
+                    swidth - TWILIO_WIDTH[0] - 10, 60, TWILIO_WIDTH[0], 16)
+            draw_label("TEXT  (503) 8-CANVAS", swidth - TWILIO_WIDTH[1] - 10, 34, TWILIO_WIDTH[1], 23)        
 
         if ((steps - last_twilio_msg_step) % (TWILIO_MSG_DURATION * 60)
                 and last_twilio_msg is not None):
@@ -361,7 +363,7 @@ def main():
             elif keys[pygame.K_DOWN]:
                 player.y -= player.vy
 
-            if keys[pygame.K_RETURN] and (player.health <= 0 or boss.health <= 0):
+            if start_screen_visible() and keys[pygame.K_RETURN] and (player.health <= 0 or boss.health <= 0):
                 player.health = 100.
                 boss.health = 100.
                 last_game_over = None
