@@ -3,3 +3,4 @@
 *.pyc
 .DS_Store
 twilio_creds.py
+shooter.egg-info
