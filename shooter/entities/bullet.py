@@ -16,11 +16,11 @@ class MyBullet(Bullet):
         self.z = 0
 
 class BulletSet(set):
-    def update_roots(self, entity):
+    def update_roots(self, x, y):
         for bullet in self:
             if bullet.root:
-                bullet.x = entity.x
-                bullet.y = entity.y
+                bullet.x = x
+                bullet.y = y
 
     def step(self, w,h,t):
         new_bullets = set()

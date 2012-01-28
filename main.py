@@ -13,7 +13,7 @@ import pygame
 import pygame.mouse
 
 from shooter.entities.bullet import BulletSet
-from shooter.entities.player import Player, Boss
+from shooter.entities.player import Player, Boss, MuzzleFlash
 from shooter.osc.dj import Dj
 from shooter.images import Image, Text
 from shooter.controller import JoystickServer
@@ -24,6 +24,8 @@ from shooter.hitboxes import hitboxes
 PLAYER_ATTACK = .5
 BOSS_ATTACK = .7
 TWILIO_ATTACK = 8.
+
+SHOT_EFFECT_FRAMES = 5
 
 swidth, sheight = 446*2, 240*2
 
@@ -106,6 +108,7 @@ def main():
 
     player = Player()  # On your own here, but it needs x and y fields.
     boss = Boss()
+    muzzle_flash = MuzzleFlash()
     enemy_bullets = BulletSet()
 
     player_bullets = BulletSet()
@@ -141,6 +144,7 @@ def main():
     twilio.start()
     last_twilio_msg = None
     last_twilio_msg_step = 0
+    last_shot_step = None
 
     while not done:
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
@@ -160,10 +164,17 @@ def main():
                    swidth - TWILIO_WIDTH[0] - 10, 60, TWILIO_WIDTH[0], 16)
         draw_label("TEXT  (503) 8-CANVAS", swidth - TWILIO_WIDTH[1] - 10, 34, TWILIO_WIDTH[1], 23)
 
-
         rp = RenderPass()
         map(rp.mark_for_draw, enemy_bullets)
         map(rp.mark_for_draw, player_bullets)
+
+        if last_shot_step is not None and (steps - last_shot_step) % (SHOT_EFFECT_FRAMES):
+            if steps % 3:
+                muzzle_flash.x = player.x + 62
+                muzzle_flash.y = player.y + 6
+                rp.mark_for_draw(muzzle_flash)
+        else:
+            last_shot_step = None
 
         rp.mark_for_draw(player)
         rp.mark_for_draw(boss)
@@ -237,12 +248,14 @@ def main():
             if (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
                 if gun.fire():
                     player_bullets.load("player_shot.xml", source=player, target=boss)
+                    last_shot_step = steps
         
             if (joy.state.buttons and joy.state.buttons[1]) or keys[pygame.K_x]:
                 if laser.fire():
                     player_bullets.load("player_laser.xml", source=player, target=boss)
 
-            player_bullets.update_roots(player)
+            player_bullets.update_roots(player.x + 30,
+                                        player.y + 2)
 
             gun.step()
             laser.step()

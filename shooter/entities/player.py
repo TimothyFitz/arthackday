@@ -5,6 +5,12 @@ class Character(object):
     def __init__(self):
         self.health = 100
 
+class MuzzleFlash(object):
+    def __init__(self):
+        self.x, self.y = 0, 0
+        self.z = .99
+        self.texture = Texture("player_shot_effect")
+
 class Player(Character):
     def __init__(self):
         super(Player, self).__init__()
@@ -12,9 +18,9 @@ class Player(Character):
         self.y = 300
         self.vx = 4
         self.vy = 4
-        
-        self.z = 0.99
-        
+
+        self.z = .99
+
         self.radius = 16
         self.texture = Texture("player_ship")
 
@@ -34,5 +40,6 @@ class Boss(Character):
         super(Boss, self).__init__()
         self.x = 750
         self.y = 330
-        self.z = 0.5
-        self.texture = Texture('boss')
+        self.z = .5
+        self.texture = Texture("boss")
+
