@@ -1,8 +1,17 @@
 from bulletml import Bullet, BulletML, collision
 
+from shooter.texture import Texture
+
+
 class MyBullet(Bullet):
     def __init__(self, radius=8, **kwargs):
-        return Bullet.__init__(self, radius=radius, **kwargs)
+        Bullet.__init__(self, radius=radius, **kwargs)
+        for tag in self.tags:
+            if tag.startswith("texture="):
+                self.texture = Texture(tag[len("texture="):])
+                break
+        else:
+            self.texture = None
 
 class BulletSet(object):
     def __init__(self, bullet):

@@ -11,6 +11,7 @@
     
     <action label="throw">
         <fire>
+            <tag>texture=bullets/12px-green-round</tag>
             <direction type="aim">15 + $rand*60</direction>
             <speed>1</speed>
             <bullet>
@@ -21,7 +22,7 @@
         </fire>
         <wait>2</wait>
     </action>
-    
+
     <!-- Begin -->
     <action label="top">
         <repeat>
