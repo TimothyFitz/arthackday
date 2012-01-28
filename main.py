@@ -18,7 +18,7 @@ from shooter.images import Image, Text
 from shooter.controller import JoystickServer
 from shooter.texture import Texture
 
-swidth, sheight = 1680, 1000 # 446*2, 240*2
+swidth, sheight = 446*2, 240*2
 
 class RenderPass(object):
     def __init__(self):
