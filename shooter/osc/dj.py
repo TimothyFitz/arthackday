@@ -130,7 +130,7 @@ class Dj(object):
         return DjSnapshot(self)
 
     def activity_level(self):
-        level = self.right.activity_level() + self.fader.activity_level()
+        level = self.right.activity_level() # + self.fader.activity_level()
         return int(level * config.DJ_DIFFICULTY)
 
 
