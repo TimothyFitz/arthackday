@@ -132,6 +132,7 @@ def main():
     
     boss_weapons = [
         None,
+        'easy_attack_1.xml',
         'spread_attack.xml',
         'laser_attack.xml',
         'gravity_attack.xml',
