@@ -12,6 +12,7 @@
     <action label="throw">
         <fire>
             <tag>texture=bullet_default</tag>
+            <tag>radius=3.5</tag>
             <direction type="aim">30 + $rand*40</direction>
             <speed>7</speed>
             <bullet>

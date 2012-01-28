@@ -20,6 +20,7 @@
                         <y>$1</y>
                     </offset>
                     <tag>texture=bullet_default</tag>
+                    <tag>radius=3.5</tag>
                     <direction type="sequence">10</direction>
                     <speed>5</speed>
                     <bullet/>

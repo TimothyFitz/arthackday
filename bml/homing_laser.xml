@@ -4,6 +4,7 @@
     
     <fire label="spawn_bullets">
         <tag>texture=bullet_default</tag>
+        <tag>radius=3.5</tag>
         <direction type="sequence">20</direction>
         <speed>2</speed>
         <bullet/>
@@ -15,6 +16,7 @@
             <y>$3</y>
         </offset>
         <tag>texture=bullet_default</tag>
+        <tag>radius=3.5</tag>
         <direction type="absolute">90</direction>
         <speed>5</speed>
         <bullet>

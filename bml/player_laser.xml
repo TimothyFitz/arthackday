@@ -4,6 +4,7 @@
     
     <fire label="laser_head">
         <tag>texture=player_laser_head</tag>
+        <tag>radius=10</tag>
         <direction type="absolute">90</direction>
         <speed>23</speed>
         <bullet/>
@@ -11,6 +12,7 @@
     
     <fire label="laser_stream">
         <tag>texture=player_laser_stream</tag>
+        <tag>radius=10</tag>
         <direction type="absolute">90</direction>
         <speed>23</speed>
         <bullet/>

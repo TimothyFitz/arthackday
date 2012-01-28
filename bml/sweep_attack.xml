@@ -34,6 +34,7 @@
                         <x>-50</x>
                     </offset>
                     <tag>texture=bullet_default</tag>
+                    <tag>radius=3.5</tag>
                     <direction type="sequence">-10</direction>
                     <bulletRef label="sweep_bullet"/>
                 </fire>

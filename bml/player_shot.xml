@@ -5,6 +5,7 @@
     <action label="throw">
         <fire>
             <tag>texture=bullets/12px-blue-round</tag>
+            <tag>radius=4</tag>
             <direction type="absolute">90</direction>
             <speed>12</speed>
             <bullet/>
