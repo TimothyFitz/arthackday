@@ -2,7 +2,7 @@
 Provides cleaned-up state info on what the DJ's doing.
 '''
 from shooter.osc import config
-from shooter.osc.server import BaseOscServer, Fader as OscFader
+from shooter.osc.server import BaseOscServer, FaderPropertiesMixin
 from datetime import timedelta
 import time
 from copy import copy
@@ -24,30 +24,24 @@ class OscServer(BaseOscServer):
         self.dj.right.update(pos)
 
     def fader(self, pos):
-        self.dj.fader.pos = pos
+        self.dj.fader.update(pos)
 
 
 class Device(object):
     def __init__(self, dj):
+        super(Device, self).__init__(dj)
         self.dj = dj
 
-
-class Fader(Device, OscFader):
-    def __init__(self, dj):
-        super(Fader, self).__init__(dj)
-        self.pos = 0.
+    def update(self, pos):
+        self._last_pos = self.pos
+        self.pos = pos
 
 
-class Record(Device):
-    def __init__(self, dj, side):
-        super(Record, self).__init__(dj)
-        self.pos = timedelta(0)
-        self.side = side
-        self._last_pos = timedelta(0)
-        self._last_dir = True
-        #self._last_sample_ts = None
-
+class DirChangeMixin(object):
+    def __init__(self, *args, **kwargs):
+        super(DirChangeMixin, self).__init__()
         self._dir_changes = []
+        self._last_dir = True
 
     def _cull_dir_changes(self):
         ts = time.time()
@@ -63,34 +57,57 @@ class Record(Device):
             except IndexError:
                 self._dir_changes = []
 
-    def update(self, pos):
+    def _update_dir(self, pos):
         ts = time.time()
-
-        # Direction changes.
-        # Skip if fader is off.
-        if (config.FADER_THRESHOLD is None
-                or getattr(self.dj.fader, self.side) > config.FADER_THRESHOLD):
-            direction = self._last_pos < pos 
-            if direction != self._last_dir:
-                self._dir_changes.append((ts, direction,))
-            self._last_dir = direction
-            self._cull_dir_changes()
-
-        #velocity = self._last_pos
-        #self._last_sample_ts = ts
-        self._last_pos = self.pos
-        self.pos = pos
+        direction = self._last_pos < pos 
+        if direction != self._last_dir:
+            self._dir_changes.append((ts, direction,))
+        self._last_dir = direction
+        self._cull_dir_changes()
 
     def dir_changes(self):
         ''' returns the # of direction changes in the last N seconds. '''
         self._cull_dir_changes()
+        print "dir changes:", len(self._dir_changes)
         return len(self._dir_changes)
-    
+
     def activity_level(self):
         for level, changes_per_s in enumerate(config.DIR_CHANGE_BUCKETS):
             if self.dir_changes() / float(config.DIR_CHANGE_SECONDS) < changes_per_s:
                 return level
         return level + 1
+
+
+class Fader(Device, FaderPropertiesMixin, DirChangeMixin):
+    def __init__(self, dj):
+        super(Fader, self).__init__(dj)
+        self.pos = 0.
+        self._last_pos = 0.
+        self._last_dir = True
+
+    def update(self, pos):
+        super(Fader, self,).update(pos)
+        self._update_dir(pos)
+
+
+class Record(Device, DirChangeMixin):
+    def __init__(self, dj, side):
+        super(Record, self).__init__(dj)
+        self.pos = timedelta(0)
+        self._last_pos = timedelta(0)
+        self.side = side
+        #self._last_sample_ts = None
+
+    def update(self, pos):
+        super(Record, self,).update(pos)
+        # Direction changes.
+        # Skip if fader is off.
+        if (config.FADER_THRESHOLD is None
+                or getattr(self.dj.fader, self.side) > config.FADER_THRESHOLD):
+            self._update_dir(pos)
+
+        #velocity = self._last_pos
+        #self._last_sample_ts = ts
 
 
 class DjSnapshot(object):
@@ -111,6 +128,10 @@ class Dj(object):
 
     def snapshot(self):
         return DjSnapshot(self)
+
+    def activity_level(self):
+        level = self.right.activity_level() + self.fader.activity_level()
+        return int(level * DJ_DIFFICULTY)
 
 
 def main():

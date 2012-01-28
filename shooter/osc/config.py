@@ -8,3 +8,5 @@ FADER_THRESHOLD = 0.05
 # Changes per second.
 DIR_CHANGE_BUCKETS = [.4, 1, 3, 5, 10]
 
+DJ_DIFFICULTY = 1.
+

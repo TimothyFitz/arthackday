@@ -21,14 +21,7 @@ def transform(transformer):
 def ms_transform(pos):
     return timedelta(milliseconds=pos)
 
-
-class Fader(object):
-    def __init__(self, pos):
-        ''' `pos` is between 0. and 1. '''
-        if pos < 0 or pos > 1:
-            raise ValueError('fader pos is out of range')
-        self.pos = pos
-
+class FaderPropertiesMixin(object):
     @property
     def left(self):
         return 1. - self.pos
@@ -36,6 +29,13 @@ class Fader(object):
     @property
     def right(self):
         return self.pos
+
+class Fader(FaderPropertiesMixin):
+    def __init__(self, pos):
+        ''' `pos` is between 0. and 1. '''
+        if pos < 0 or pos > 1:
+            raise ValueError('fader pos is out of range: ' + str(pos))
+        self.pos = pos
 
 
 class BaseOscServer(object):
