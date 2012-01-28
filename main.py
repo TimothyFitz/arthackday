@@ -23,7 +23,7 @@ from shooter.hitboxes import hitboxes
 
 PLAYER_ATTACK = .03
 BOSS_ATTACK = .4
-TWILIO_ATTACK = 8.
+TWILIO_ATTACK = 10.
 
 SHOT_EFFECT_FRAMES = 10
 
