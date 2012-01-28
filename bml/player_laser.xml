@@ -5,14 +5,14 @@
     <fire label="laser_head">
         <tag>texture=player_laser_head</tag>
         <direction type="absolute">90</direction>
-        <speed>20</speed>
+        <speed>23</speed>
         <bullet/>
     </fire>
     
     <fire label="laser_stream">
         <tag>texture=player_laser_stream</tag>
         <direction type="absolute">90</direction>
-        <speed>20</speed>
+        <speed>23</speed>
         <bullet/>
     </fire>
     
@@ -23,7 +23,7 @@
             <times>50</times>
             <action>
                 <fireRef label="laser_stream"/>
-                <wait>1</wait>
+                <wait>0</wait>
             </action>
         </repeat>
     </action>
