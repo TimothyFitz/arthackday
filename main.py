@@ -78,8 +78,8 @@ def draw_health_bar(health, y, color):
 
 _texts = {}
 def draw_label(label, x, y, width, height):
-    _texts[label] = _texts.get(label,
-                               Text(label, fontsize=256, color=(255,255,255,255)))
+    if label not in _texts:
+        _texts[label] = Text(label, fontsize=256, color=(255,255,255,255))
     _texts[label].draw(pos=(x, y), width=width, height=height)
 
 def main():
