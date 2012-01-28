@@ -49,7 +49,7 @@ class Player(Character):
 class Boss(Character):
     def __init__(self):
         super(Boss, self).__init__()
-        self.starting_x = 750
+        self.starting_x = 770
         self.x = self.starting_x
         self.y = 330
         self.z = .5

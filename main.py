@@ -318,7 +318,7 @@ def main():
         if live_dj.activity_level() > 2 or abs(boss.x - boss.starting_x) > 3:
             if last_boss_break_step is None:
                 last_boss_break_step = steps
-            boss.x = int(math.cos((steps - last_boss_break_step + 30) / 30.) * 50 + boss.starting_x)
+            boss.x = int(math.cos((steps - last_boss_break_step + (2*3.1416*30)) / 30.) * 50 + (boss.starting_x - 50))
         else:
             last_boss_break_step = None
 
