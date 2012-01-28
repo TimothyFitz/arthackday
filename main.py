@@ -392,6 +392,8 @@ def main():
                 activity_level = live_dj.activity_level()
                 if activity_level:
                     enemy_bullets.load(boss_weapons[activity_level], source=boss, target=player)
+                else:
+                    enemy_bullets.load(boss_weapons[1], source=boss, target=player)
     
     print "FPS:", steps / (time.time() - start)
 
