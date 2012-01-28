@@ -17,6 +17,8 @@
     </fire>
     
     <action label="throw">
+        <fireRef label="laser_head"/>
+        <wait>1</wait>
         <fireRef label="laser_stream"/>
         <wait>2</wait>
     </action>
