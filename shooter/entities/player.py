@@ -5,6 +5,8 @@ class Player(object):
     def __init__(self):
         self.x = 50
         self.y = 300
+        self.vx = 4
+        self.vy = 4
         self.radius = 16
         self.texture = Texture("alien")
 

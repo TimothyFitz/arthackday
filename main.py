@@ -131,8 +131,8 @@ def main():
                 
         if joy.state.hats:
             hx, hy = joy.state.hats[0]
-            player.x += hx*4
-            player.y += hy*4
+            player.x += hx*player.vx
+            player.y += hy*player.vy
 
         keys = pygame.key.get_pressed()
         
@@ -148,13 +148,14 @@ def main():
         laser.step()
 
         if keys[pygame.K_RIGHT]:
-            player.x += 1
+            player.x += player.vx
         elif keys[pygame.K_LEFT]:
-            player.x -= 1
-        elif keys[pygame.K_UP]:
-            player.y += 1
+            player.x -= player.vx
+            
+        if keys[pygame.K_UP]:
+            player.y += player.vy
         elif keys[pygame.K_DOWN]:
-            player.y -= 1
+            player.y -= player.vy
         
         steps += 1
     
