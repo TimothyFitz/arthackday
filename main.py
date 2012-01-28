@@ -94,7 +94,7 @@ def main():
     player = Player()  # On your own here, but it needs x and y fields.
     boss = Boss()
     enemy_bullets = BulletSet()
-    enemy_bullets.load("sweep_attack.xml", source=boss, target=player)
+    enemy_bullets.load("spread_attack.xml", source=boss, target=player)
     
     player_bullets = BulletSet()
 

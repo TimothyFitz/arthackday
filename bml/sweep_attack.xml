@@ -30,6 +30,9 @@
             <times>18</times>
             <action>
                 <fire>
+                    <offset type="absolute">
+                        <x>-50</x>
+                    </offset>
                     <tag>texture=bullet_default</tag>
                     <direction type="sequence">-10</direction>
                     <bulletRef label="sweep_bullet"/>

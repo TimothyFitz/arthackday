@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<!DOCTYPE bulletml SYSTEM "http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/bulletml.dtd">
+<bulletml type="horizontal" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
+    
+    <action label="spread_shot">
+        <fire>
+            <direction type="aim">-30</direction>
+            <bullet>
+                <action>
+                    <vanish/>
+                </action>
+            </bullet>
+        </fire>
+        <repeat>
+            <times>6</times>
+            <action>
+                <fire>
+                    <offset type="absolute">
+                        <x>-40</x>
+                        <y>$1</y>
+                    </offset>
+                    <tag>texture=bullet_default</tag>
+                    <direction type="sequence">10</direction>
+                    <speed>5</speed>
+                    <bullet/>
+                </fire>
+            </action>
+        </repeat>
+    </action>
+    
+    <action label="double_spread">
+        <actionRef label="spread_shot">
+            <param>38</param>
+        </actionRef>
+        <actionRef label="spread_shot">
+            <param>-38</param>
+        </actionRef>
+        <wait>30</wait>
+    </action>
+    
+    <!-- Begin in this action -->
+    <action label="top">
+        <repeat>
+            <times>10</times>
+            <actionRef label="double_spread"/>
+        </repeat>
+    </action>
+</bulletml>
