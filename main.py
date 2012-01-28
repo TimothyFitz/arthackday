@@ -196,7 +196,7 @@ def main():
     last_twilio_msg_step = 0
 
     last_shot_step = None
-    last_game_over = None
+    last_game_over = -GAME_OVER_FRAMES - 1
 
     def start_screen_visible():
         return last_game_over is not None and steps - last_game_over > GAME_OVER_FRAMES
@@ -373,7 +373,7 @@ def main():
 
             steps += 1
         
-            if steps % 15 == 0:
+            if not start_screen_visible() and steps % 15 == 0:
                 activity_level = live_dj.activity_level()
                 if activity_level:
                     enemy_bullets.load(boss_weapons[activity_level], source=boss, target=player)

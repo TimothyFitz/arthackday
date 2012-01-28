@@ -3,7 +3,7 @@ from shooter.texture import Texture
 
 class Character(object):
     def __init__(self):
-        self.health = 100
+        self.health = 0.
         self.last_hit_step = None
 
 class Flame(object):
