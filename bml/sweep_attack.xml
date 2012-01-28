@@ -20,7 +20,11 @@
     <action label="sweep">
         <fire>
             <direction type="absolute">$1</direction>
-            <bullet/>
+            <bullet>
+                <action>
+                    <vanish/>
+                </action>
+            </bullet>
         </fire>
         <repeat>
             <times>18</times>

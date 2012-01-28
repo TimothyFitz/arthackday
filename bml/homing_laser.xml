@@ -10,8 +10,12 @@
     </fire>
     
     <fire label="single_bullet">
+        <offset type="absolute">
+            <x>65</x>
+            <y>$3</y>
+        </offset>
         <tag>texture=bullet_default</tag>
-        <direction type="absolute">20</direction>
+        <direction type="absolute">90</direction>
         <speed>5</speed>
         <bullet>
             <action>
@@ -51,10 +55,20 @@
                 <fireRef label="single_bullet">
                     <param>$1</param>
                     <param>$2 + $3*5</param>
+                    <param>$4</param>
                 </fireRef>
                 <wait>0</wait>
             </action>
         </repeat>
+    </action>
+
+    <action label="homing_beam_upper">
+        <actionRef label="homing_beam">
+            <param>0</param>
+            <param>255</param>
+            <param>$rand</param>
+            <param>40</param>
+        </actionRef>
     </action>
     
     <action label="homing_beam_lower">
@@ -62,14 +76,7 @@
             <param>180</param>
             <param>270</param>
             <param>$rand</param>
-        </actionRef>
-    </action>
-    
-    <action label="homing_beam_upper">
-        <actionRef label="homing_beam">
-            <param>0</param>
-            <param>255</param>
-            <param>$rand</param>
+            <param>-40</param>
         </actionRef>
     </action>
         

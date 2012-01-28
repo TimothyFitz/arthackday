@@ -5,7 +5,7 @@
     <fire label="laser_fire">
         <tag>texture=bullet_default</tag>
         <offset type="absolute">
-            <x>30</x>
+            <x>-30</x>
             <y>$1</y>
         </offset>
         <direction type="absolute">270</direction>
