@@ -287,9 +287,9 @@ def main():
                 end = min(len(msg), offset + line_len)
                 m = msg[offset:offset + line_len]
                 w = len(m) * char_w
-                h = 23
+                h = 26
                 rot = math.sin(steps / 6.) * (50 / len(m))
-                x = swidth - ((line_len * char_w) + (250 - (steps - last_twilio_msg_step)))
+                x = swidth - ((line_len * char_w) + (150 - ((steps * 1.07) - last_twilio_msg_step)))
                 y = (sheight / 2) + 30
                 y -= (h + 3) * (offset / line_len)
                 draw_label(m, x, y, w, 23, rotation=rot)
@@ -307,7 +307,8 @@ def main():
         # Boss movement.
         #print live_dj.activity_level()
         #print 75. / (live_dj.activity_level() + 1)
-        if live_dj.activity_level() > 2 or abs(boss.x - boss.starting_x) > 3:
+        activity_level = live_dj.activity_level()
+        if activity_level > 3 or abs(boss.x - boss.starting_x) > 3:
             if last_boss_break_step is None:
                 last_boss_break_step = steps
             boss.x = int(math.cos((steps - last_boss_break_step + (2*3.1416*30)) / 30.) * 50 + (boss.starting_x - 50))

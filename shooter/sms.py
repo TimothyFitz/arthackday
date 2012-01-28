@@ -5,7 +5,7 @@ import time
 import datetime
 from email.utils import parsedate_tz
 
-TWILIO_MSG_DURATION = 3
+TWILIO_MSG_DURATION = 4
 
 client = TwilioRestClient(ACCOUNT, TOKEN)
 
