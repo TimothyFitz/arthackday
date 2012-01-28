@@ -97,7 +97,7 @@ def main():
     enemy_bullets.load("homing_laser.xml", source=boss, target=player)
     
     player_bullets = BulletSet()
-    
+
     steps = 0
     start = time.time()
 
