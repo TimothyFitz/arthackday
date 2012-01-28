@@ -5,7 +5,7 @@
     <fire label="spawn_bullets">
         <tag>texture=bullet_default</tag>
         <tag>radius=3.5</tag>
-        <direction type="sequence">20</direction>
+        <direction type="sequence">40</direction>
         <speed>2</speed>
         <bullet/>
     </fire>
@@ -41,7 +41,7 @@
                 </changeSpeed>
                 <wait>60</wait>
                 <repeat>
-                    <times>9</times>
+                    <times>5</times>
                     <action>
                         <fireRef label="spawn_bullets"/>
                     </action>
