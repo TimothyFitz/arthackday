@@ -221,7 +221,8 @@ def main():
                 if muzzle_flash.current_texture_index >= len(muzzle_flash.textures):
                     muzzle_flash.current_texture_index = 0
             muzzle_flash.texture = muzzle_flash.textures[muzzle_flash.current_texture_index]
-            rp.mark_for_draw(muzzle_flash)
+            if not start_screen_visible() and player.health > 0:
+                rp.mark_for_draw(muzzle_flash)
         else:
             last_shot_step = None
 
