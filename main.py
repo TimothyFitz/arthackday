@@ -33,13 +33,14 @@ class RenderPass(object):
         for texture, things in self.draw_by_texture.items():
             glLoadIdentity()
             points = []
+            hw, hh = texture.width // 2, texture.height // 2
             for thing in things:
                 points += [
-                [thing.x, thing.y, 0,  0,0],
-                [thing.x+texture.width,thing.y,0,  1,0],
-                [thing.x+texture.width,thing.y+texture.height,0,  1,1],
-                [thing.x,thing.y+texture.height,0,  0,1]
-            ]
+                    [thing.x - hw, thing.y - hh, 0,  0,0],
+                    [thing.x + hw, thing.y - hh, 0,  1,0],
+                    [thing.x + hw, thing.y + hh, 0,  1,1],
+                    [thing.x - hw, thing.y + hh, 0,  0,1]
+                ]
 
             stride = 5*4
             points_vbo = vbo.VBO(array(points, 'f'))
