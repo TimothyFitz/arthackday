@@ -14,6 +14,7 @@ from shooter.entities.bullet import BulletSet
 from shooter.entities.player import Player
 from shooter.osc.dj import Dj
 from shooter.images import Image, Text
+from shooter.controller import JoystickServer
 
 
 def main():
@@ -26,6 +27,10 @@ def main():
     swidth, sheight = 800, 600
     gutil.initializeDisplay(swidth, sheight)
 
+    joy = JoystickServer()
+    joy.daemon = True
+    joy.start()
+    
     done = False
 
     cow = Image('cow')
@@ -51,9 +56,6 @@ def main():
         td = (current_dj.right.pos - last_dj.right.pos).total_seconds() # - (current_time - last_time)
         d = td * V
 
-        
-        print td, d
-        
         bullets.root.x += d
         if bullets.root.x < 0:
             bullets.root.x = 0
@@ -100,6 +102,11 @@ def main():
         for event in eventlist:
             if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                 done = True
+                
+        if joy.state.hats:
+            hx, hy = joy.state.hats[0]
+            player.x += hx*4
+            player.y += hy*4
 
         keys = pygame.key.get_pressed()
 
