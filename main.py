@@ -29,6 +29,8 @@ SHOT_EFFECT_FRAMES = 10
 
 HIT_EFFECT_FRAMES = 1
 
+GAME_OVER_FRAMES = 120
+
 swidth, sheight = 848, 480
 
 #global last_boss_hit_step = None
@@ -114,6 +116,7 @@ class HitBox(object):
 steps = 0
 
 
+
 def main():
     pygame.init()
     gutil.initializeDisplay(swidth, sheight)
@@ -144,6 +147,18 @@ def main():
             return space[(steps//15) % len(space)]
             
     bg = Background()
+
+    class StarScreen(object):
+        def __init__(self):
+            self.x = swidth // 2
+            self.y = sheight // 2
+            self.z = 0
+
+        @property
+        def texture(self):
+            return Texture('bg/space_1')
+
+    start_screen = StarScreen()
 
     boss_weapons = [
         None,
@@ -177,7 +192,12 @@ def main():
     twilio.start()
     last_twilio_msg = None
     last_twilio_msg_step = 0
+
     last_shot_step = None
+    last_game_over = None
+
+    def start_screen_visible():
+        return last_game_over is not None and steps - last_game_over > GAME_OVER_FRAMES
 
     while not done:
         if joy.state.hats:
@@ -192,8 +212,6 @@ def main():
         glLoadIdentity()
 
         rp = RenderPass()
-        map(rp.mark_for_draw, enemy_bullets)
-        map(rp.mark_for_draw, player_bullets)
 
         #if last_shot_step is not None and (steps - last_shot_step) % (SHOT_EFFECT_FRAMES):
         if (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
@@ -218,23 +236,32 @@ def main():
                 flame.current_texture_index = 0
         flame.texture = flame.textures[flame.current_texture_index]
 
-        if boss.health > 0:
-            rp.mark_for_draw(boss)
+        if start_screen_visible():
+            rp.mark_for_draw(start_screen)
+        else:
+            if boss.health > 0:
+                map(rp.mark_for_draw, enemy_bullets)
+                rp.mark_for_draw(boss)
 
-        if player.health > 0:
-            rp.mark_for_draw(player)
-            rp.mark_for_draw(flame)
-
-        rp.mark_for_draw(bg)
+            if player.health > 0:
+                map(rp.mark_for_draw, player_bullets)
+                rp.mark_for_draw(player)
+                rp.mark_for_draw(flame)
+            rp.mark_for_draw(bg)
 
         glLoadIdentity()
         rp.render()
 
-        if boss.health <= 0:
+        if start_screen_visible():
+            pass
+        elif boss.health <= 0:
             draw_label('YOU KILLED THE DJ', swidth / 2 - 150, sheight / 2, 300, 40)
-
+            if last_game_over is None:
+                last_game_over = steps
         elif player.health <= 0:
             draw_label('GAME OVER', swidth / 2 - 100, sheight / 2, 200, 50)
+            if last_game_over is None:
+                last_game_over = steps
         else:
             # Health bars.
             draw_health_bar(player.health / 100., sheight - 30, (0., 0.8, 0.))
@@ -291,13 +318,13 @@ def main():
 
             for hitbox in hitboxes['player_ship'].values():
                 hitbox = HitBox(player, hitbox)
-                if enemy_bullets.collides(hitbox):
+                if boss.health > 0 and enemy_bullets.collides(hitbox):
                     player.health -= BOSS_ATTACK
                     player.last_hit_step = steps
 
             for hitbox in hitboxes['boss_ship'].values():
                 hitbox = HitBox(boss, hitbox)
-                if player_bullets.collides(hitbox):
+                if player.health > 0 and player_bullets.collides(hitbox):
                     boss.health -= PLAYER_ATTACK
                     boss.last_hit_step = steps
 
@@ -337,6 +364,7 @@ def main():
             if keys[pygame.K_RETURN] and (player.health <= 0 or boss.health <= 0):
                 player.health = 100.
                 boss.health = 100.
+                last_game_over = None
         
             if keys[pygame.K_q]:
                 time.sleep(1)

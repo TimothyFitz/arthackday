@@ -71,7 +71,7 @@ class DirChangeMixin(object):
         return len(self._dir_changes)
 
     def activity_level(self):
-        print self, self.dir_changes()
+        #print self, self.dir_changes()
         for level, changes_per_s in enumerate(config.DIR_CHANGE_BUCKETS):
             if self.dir_changes() / float(config.DIR_CHANGE_SECONDS) < changes_per_s:
                 return level
