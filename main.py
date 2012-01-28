@@ -216,18 +216,20 @@ def main():
 
         rp.mark_for_draw(bg)
 
+        glLoadIdentity()
         rp.render()
 
         if boss.health <= 0:
             draw_label('YOU KILLED THE DJ', swidth / 2 - 150, sheight / 2, 300, 40)
+
         elif player.health <= 0:
             draw_label('GAME OVER', swidth / 2 - 100, sheight / 2, 200, 50)
-
-        # Health bars.
-        draw_health_bar(player.health / 100., sheight - 30, (0., 0.8, 0.))
-        draw_health_bar(boss.health / 100., 10, (0.8, 0., 0.))
-        draw_label("PLAYER", 15, sheight - 29, 52, 16)
-        draw_label("BOSS", 15, 11, 35, 16)
+        else:
+            # Health bars.
+            draw_health_bar(player.health / 100., sheight - 30, (0., 0.8, 0.))
+            draw_health_bar(boss.health / 100., 10, (0.8, 0., 0.))
+            draw_label("PLAYER", 15, sheight - 29, 52, 16)
+            draw_label("BOSS", 15, 11, 35, 16)
 
         # Twilio.
         TWILIO_WIDTH = (210, 260,)
