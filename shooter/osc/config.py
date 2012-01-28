@@ -9,5 +9,5 @@ FADER_THRESHOLD = None#0.05
 DIR_CHANGE_BUCKETS = [2, 4, 6, 10, 12, 14]
 
 # Higher values make it harder on the DJ.
-DJ_DIFFICULTY = 1.
+DJ_DIFFICULTY = 1.4
 
