@@ -13,7 +13,6 @@ class Image:
 
         self.texture, self.width, self.height = gutil.loadImage(filename)
         self.displayList = gutil.createTexDL(self.texture, self.width, self.height)
-   
 
     def __del__(self):
         if self.texture != None:

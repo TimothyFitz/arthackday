@@ -13,41 +13,34 @@ class MyBullet(Bullet):
         else:
             self.texture = None
         self.root = root
+        self.z = 0
 
-class BulletSet(object):
-    def __init__(self):
-        self.bullets = set()
-    
+class BulletSet(set):
     def update_roots(self, entity):
         for bullet in self:
             if bullet.root:
                 bullet.x = entity.x
                 bullet.y = entity.y
 
-    def step(self):
+    def step(self, w,h,t):
         new_bullets = set()
         dead_bullets = set()
 
-        for bullet in self.bullets:
+        for bullet in self:
             new_bullets.update(bullet.step())
             if bullet.finished:
                 dead_bullets.add(bullet)
 
-        self.bullets |= new_bullets
-        self.bullets -= dead_bullets
-    
+            if not (-t <= bullet.x <= w+t) or not (-t <= bullet.y <= h+t):
+                dead_bullets.add(bullet)
+
+        self |= new_bullets
+        self -= dead_bullets
+
     def collides(self, other):
         return collision.collides_all(other, list(self))
-
-    def cull(self, w,h,t):
-        for bullet in self:
-            if not (-t >= bullet.x >= w+t) or not (-t >= bullet.y >= h+t):
-                bullet.finished = True
 
     def load(self, filename, source, target, rank=0.5):
         bullet = MyBullet.FromDocument(BulletML.FromDocument(open("bml/" + filename, "rU")), source.x, source.y, target=target, rank=rank)
         bullet.root = True
-        self.bullets.add(bullet)
-
-    def __iter__(self):
-        return iter(self.bullets)
+        self.add(bullet)

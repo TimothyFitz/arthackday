@@ -18,7 +18,7 @@ from shooter.images import Image, Text
 from shooter.controller import JoystickServer
 from shooter.texture import Texture
 
-swidth, sheight = 446*2, 240*2
+swidth, sheight = 1680, 1000 # 446*2, 240*2
 
 class RenderPass(object):
     def __init__(self):
@@ -36,10 +36,10 @@ class RenderPass(object):
             hw, hh = texture.width // 2, texture.height // 2
             for thing in things:
                 points += [
-                    [thing.x - hw, thing.y - hh, 0,  0,0],
-                    [thing.x + hw, thing.y - hh, 0,  1,0],
-                    [thing.x + hw, thing.y + hh, 0,  1,1],
-                    [thing.x - hw, thing.y + hh, 0,  0,1]
+                    [thing.x - hw, thing.y - hh, thing.z,  0,0],
+                    [thing.x + hw, thing.y - hh, thing.z,  1,0],
+                    [thing.x + hw, thing.y + hh, thing.z,  1,1],
+                    [thing.x - hw, thing.y + hh, thing.z,  0,1]
                 ]
 
             stride = 5*4
@@ -80,6 +80,9 @@ def main():
     pygame.init()
     gutil.initializeDisplay(swidth, sheight)
 
+    from pygame import display
+    print display.list_modes()
+
     live_dj = Dj()
 
     player = Player()  # On your own here, but it needs x and y fields.
@@ -107,9 +110,6 @@ def main():
         glPointSize(10)
         glLoadIdentity()
 
-        enemy_bullets.step()
-        player_bullets.step()
-
         # Health bar
         draw_health_bar(player.health / 100., sheight - 30, (0., 0.8, 0.))
         draw_health_bar(boss.health / 100., 10, (0.8, 0., 0.))
@@ -133,8 +133,8 @@ def main():
         if player_bullets.collides(boss):
             boss.health -= 1
 
-        enemy_bullets.cull(swidth, sheight, 100)
-        player_bullets.cull(swidth, sheight, 100)
+        enemy_bullets.step(swidth, sheight, 100)
+        player_bullets.step(swidth, sheight, 100)
 
         eventlist = pygame.event.get()
         for event in eventlist:
@@ -175,6 +175,9 @@ def main():
             time.sleep(1)
         
         steps += 1
+        
+        if steps % 120 == 0:
+            print "Bullets:", len(enemy_bullets), len(player_bullets)
     
     print "FPS:", steps / (time.time() - start)
 

@@ -20,7 +20,6 @@ def initializeDisplay(w, h):
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
-
 def loadImage(image):
     textureSurface = pygame.image.load(image)
 

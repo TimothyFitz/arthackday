@@ -13,7 +13,7 @@ class _Texture(object):
         if self.id != None:
             gutil.delTexture(self.id)
             self.id = None
-            
+
 TEXTURES = {}
 def Texture(texname):
     try:

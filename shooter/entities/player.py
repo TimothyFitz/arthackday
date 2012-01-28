@@ -12,6 +12,9 @@ class Player(Character):
         self.y = 300
         self.vx = 4
         self.vy = 4
+        
+        self.z = 0.99
+        
         self.radius = 16
         self.texture = Texture("player_ship")
 
@@ -31,5 +34,5 @@ class Boss(Character):
         super(Boss, self).__init__()
         self.x = 750
         self.y = 330
-        self.texture = Texture("player_ship")
-
+        self.z = 0.5
+        self.texture = Texture('boss')
