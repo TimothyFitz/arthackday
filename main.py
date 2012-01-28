@@ -107,6 +107,15 @@ def draw_label(label, x, y, width, height, rotation=0):
         _texts[label] = Text(label, fontsize=256, color=(255,255,255,255))
     _texts[label].draw(pos=(x, y), width=width, height=height, rotation=rotation)
 
+    
+def move_player(player, x, y):
+    _test_x = player.x + (x*player.vx)
+    _test_y = player.y + (y*player.vy)
+    if (_test_x > 0 and _test_x < swidth - 200):
+        player.x = _test_x
+    if (_test_y > 0 and _test_y < sheight):
+        player.y = _test_y
+
 class HitBox(object):
     def __init__(self, entity, json):
         self.x = entity.x + json['offset']['x']
@@ -204,8 +213,7 @@ def main():
     while not done:
         if joy.state.hats:
             hx, hy = joy.state.hats[0]
-            player.x += hx*player.vx
-            player.y += hy*player.vy
+            move_player(player, hx, hy)
 
         keys = pygame.key.get_pressed()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
@@ -354,14 +362,14 @@ def main():
             laser.step()
 
             if keys[pygame.K_RIGHT]:
-                player.x += player.vx
+                move_player(player, 1, 0)
             elif keys[pygame.K_LEFT]:
-                player.x -= player.vx
+                move_player(player, -1, 0)
             
             if keys[pygame.K_UP]:
-                player.y += player.vy
+                move_player(player, 0, 1)
             elif keys[pygame.K_DOWN]:
-                player.y -= player.vy
+                move_player(player, 0, -1)
 
             if start_screen_visible() and keys[pygame.K_RETURN] and (player.health <= 0 or boss.health <= 0):
                 player.health = 100.
