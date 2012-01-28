@@ -27,7 +27,12 @@ TWILIO_ATTACK = 8.
 
 SHOT_EFFECT_FRAMES = 5
 
+HIT_EFFECT_FRAMES = 1
+
 swidth, sheight = 446*2, 240*2
+
+#global last_boss_hit_step = None
+#global last_player_hit_step = None
 
 class RenderPass(object):
     def __init__(self):
@@ -45,26 +50,34 @@ class RenderPass(object):
             points = []
             hw, hh = texture.width // 2, texture.height // 2
             for thing in things:
+                colors = (1., 1., 1.,)
+                global steps
+                if hasattr(thing, 'last_hit_step') and steps - HIT_EFFECT_FRAMES <= thing.last_hit_step:
+                    colors = (1., .2, .2,)
                 points += [
-                    [thing.x - hw, thing.y - hh, thing.z,  0,0],
-                    [thing.x + hw, thing.y - hh, thing.z,  1,0],
-                    [thing.x + hw, thing.y + hh, thing.z,  1,1],
-                    [thing.x - hw, thing.y + hh, thing.z,  0,1]
+                    [thing.x - hw, thing.y - hh, thing.z,  0,0, colors[0], colors[1], colors[2]],
+                    [thing.x + hw, thing.y - hh, thing.z,  1,0, colors[0], colors[1], colors[2]],
+                    [thing.x + hw, thing.y + hh, thing.z,  1,1, colors[0], colors[1], colors[2]],
+                    [thing.x - hw, thing.y + hh, thing.z,  0,1, colors[0], colors[1], colors[2]],
                 ]
 
-            stride = 5*4
+            stride = 8*4
             points_vbo = vbo.VBO(array(points, 'f'))
 
             points_vbo.bind()
             glBindTexture(GL_TEXTURE_2D, texture.id)
+
+            glEnableClientState(GL_COLOR_ARRAY)
             glEnableClientState(GL_VERTEX_ARRAY)
             glEnableClientState(GL_TEXTURE_COORD_ARRAY)
             glVertexPointer(3, GL_FLOAT, stride, points_vbo)
             glTexCoordPointer(2, GL_FLOAT, stride, points_vbo + 3*4)
+            glColorPointer(3, GL_FLOAT, stride, points_vbo + 5*4)
             glDrawArrays(GL_QUADS, 0, len(points))
             points_vbo.unbind()
-            glDisableClientState(GL_VERTEX_ARRAY)
             glDisableClientState(GL_TEXTURE_COORD_ARRAY)
+            glDisableClientState(GL_VERTEX_ARRAY)
+            glDisableClientState(GL_COLOR_ARRAY)
 
 class Debounce(object):
     def __init__(self, cooldown):
@@ -98,6 +111,8 @@ class HitBox(object):
         self.y = entity.y + json['offset']['y']
         self.radius = json['radius']
 
+steps = 0
+
 def main():
     pygame.init()
     gutil.initializeDisplay(swidth, sheight)
@@ -125,7 +140,7 @@ def main():
         'flower_attack.xml',
     ]
 
-    steps = 0
+    global steps
     start = time.time()
 
     joy = JoystickServer()
@@ -224,7 +239,7 @@ def main():
             last_twilio_msg = msg
 
         pygame.display.flip()
-        
+
         curtime = time.time()
         time_left += curtime - last_time
         last_time = curtime
@@ -236,11 +251,13 @@ def main():
                 hitbox = HitBox(player, hitbox)
                 if enemy_bullets.collides(hitbox):
                     player.health -= BOSS_ATTACK
+                    player.last_hit_step = steps
 
             for hitbox in hitboxes['boss_ship'].values():
                 hitbox = HitBox(boss, hitbox)
                 if player_bullets.collides(hitbox):
                     boss.health -= PLAYER_ATTACK
+                    boss.last_hit_step = steps
 
             enemy_bullets.step(swidth, sheight, 100)
             player_bullets.step(swidth, sheight, 100)
@@ -296,3 +313,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
