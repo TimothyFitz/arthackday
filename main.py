@@ -29,7 +29,7 @@ SHOT_EFFECT_FRAMES = 5
 
 HIT_EFFECT_FRAMES = 1
 
-swidth, sheight = 446*2, 240*2
+swidth, sheight = 848, 480
 
 #global last_boss_hit_step = None
 #global last_player_hit_step = None
@@ -113,6 +113,7 @@ class HitBox(object):
 
 steps = 0
 
+
 def main():
     pygame.init()
     gutil.initializeDisplay(swidth, sheight)
@@ -129,6 +130,21 @@ def main():
     enemy_bullets = BulletSet()
 
     player_bullets = BulletSet()
+    
+    space = [Texture("bg/space_%s" % n, z=-100) for n in range(1, 32)]
+    
+    class Background(object):
+        def __init__(self):
+            self.x = swidth // 2
+            self.y = sheight // 2
+            self.z = 0
+
+        @property
+        def texture(self):
+            return space[(steps//15) % len(space)]
+            
+    bg = Background()
+            
     
     boss_weapons = [
         None,
@@ -170,18 +186,6 @@ def main():
         glPointSize(10)
         glLoadIdentity()
 
-        # Health bars.
-        draw_health_bar(player.health / 100., sheight - 30, (0., 0.8, 0.))
-        draw_health_bar(boss.health / 100., 10, (0.8, 0., 0.))
-        draw_label("PLAYER", 15, sheight - 29, 52, 16)
-        draw_label("BOSS", 15, 11, 35, 16)
-
-        # Twilio.
-        TWILIO_WIDTH = (210, 260,)
-        draw_label("Tired of this DJ? Shoot him.",
-                   swidth - TWILIO_WIDTH[0] - 10, 60, TWILIO_WIDTH[0], 16)
-        draw_label("TEXT  (503) 8-CANVAS", swidth - TWILIO_WIDTH[1] - 10, 34, TWILIO_WIDTH[1], 23)
-
         rp = RenderPass()
         map(rp.mark_for_draw, enemy_bullets)
         map(rp.mark_for_draw, player_bullets)
@@ -203,6 +207,13 @@ def main():
                 flame.current_texture_index = 0
         flame.texture = flame.textures[flame.current_texture_index]
 
+        rp.mark_for_draw(player)
+        rp.mark_for_draw(flame)
+        rp.mark_for_draw(boss)
+        rp.mark_for_draw(bg)
+
+        rp.render()
+
         if boss.health > 0:
             rp.mark_for_draw(boss)
         else:
@@ -214,8 +225,17 @@ def main():
         else:
             draw_label('GAME OVER', swidth / 2 - 100, sheight / 2, 200, 50)
 
+        # Health bars.
+        draw_health_bar(player.health / 100., sheight - 30, (0., 0.8, 0.))
+        draw_health_bar(boss.health / 100., 10, (0.8, 0., 0.))
+        draw_label("PLAYER", 15, sheight - 29, 52, 16)
+        draw_label("BOSS", 15, 11, 35, 16)
 
-        rp.render()
+        # Twilio.
+        TWILIO_WIDTH = (210, 260,)
+        draw_label("Tired of this DJ? Shoot him.",
+                   swidth - TWILIO_WIDTH[0] - 10, 60, TWILIO_WIDTH[0], 16)
+        draw_label("TEXT  (503) 8-CANVAS", swidth - TWILIO_WIDTH[1] - 10, 34, TWILIO_WIDTH[1], 23)        
 
         if ((steps - last_twilio_msg_step) % (TWILIO_MSG_DURATION * 60)
                 and last_twilio_msg is not None):
