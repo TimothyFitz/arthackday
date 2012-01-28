@@ -15,7 +15,7 @@
             <x>65</x>
             <y>$3</y>
         </offset>
-        <tag>texture=bullet_default</tag>
+        <tag>texture=bullet_mean</tag>
         <tag>radius=3.5</tag>
         <direction type="absolute">90</direction>
         <speed>5</speed>

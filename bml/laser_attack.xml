@@ -3,7 +3,7 @@
 <bulletml type="horizontal" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
     
     <fire label="laser_fire">
-        <tag>texture=bullet_default</tag>
+        <tag>texture=bullet_fast</tag>
         <tag>radius=3.5</tag>
         <offset type="absolute">
             <x>-30</x>
