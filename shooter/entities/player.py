@@ -26,4 +26,5 @@ class Boss(object):
     def __init__(self):
         self.x = 750
         self.y = 330
-        self.texture = None
+        self.texture = Texture("player_ship")
+
