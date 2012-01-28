@@ -207,22 +207,20 @@ def main():
                 flame.current_texture_index = 0
         flame.texture = flame.textures[flame.current_texture_index]
 
-        rp.mark_for_draw(player)
-        rp.mark_for_draw(flame)
-        rp.mark_for_draw(boss)
-        rp.mark_for_draw(bg)
-
-        rp.render()
-
         if boss.health > 0:
             rp.mark_for_draw(boss)
-        else:
-            draw_label('YOU KILLED THE DJ', swidth / 2 - 150, sheight / 2, 300, 40)
 
         if player.health > 0:
             rp.mark_for_draw(player)
             rp.mark_for_draw(flame)
-        else:
+
+        rp.mark_for_draw(bg)
+
+        rp.render()
+
+        if boss.health <= 0:
+            draw_label('YOU KILLED THE DJ', swidth / 2 - 150, sheight / 2, 300, 40)
+        elif player.health <= 0:
             draw_label('GAME OVER', swidth / 2 - 100, sheight / 2, 200, 50)
 
         # Health bars.
