@@ -278,7 +278,7 @@ def main():
         while time_left >= game_tick:
             time_left -= game_tick
 
-            for hitbox in hitboxes['boss_ship'].values():
+            for hitbox in hitboxes['player_ship'].values():
                 hitbox = HitBox(player, hitbox)
                 if enemy_bullets.collides(hitbox):
                     player.health -= BOSS_ATTACK
