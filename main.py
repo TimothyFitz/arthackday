@@ -20,6 +20,10 @@ from shooter.controller import JoystickServer
 from shooter.texture import Texture
 from shooter.sms import MessagePoll, TWILIO_MSG_DURATION
 
+PLAYER_ATTACK = .5
+BOSS_ATTACK = .7
+TWILIO_ATTACK = 8.
+
 swidth, sheight = 446*2, 240*2
 
 class RenderPass(object):
@@ -169,6 +173,7 @@ def main():
         else:
             last_twilio_msg_step = 0
             last_twilio_msg = None
+            boss.health -= TWILIO_ATTACK
         if steps % 60 == 0 and twilio.messages:
             msg = twilio.messages.pop()
             last_twilio_msg_step = steps
@@ -177,10 +182,10 @@ def main():
         pygame.display.flip()
 
         if enemy_bullets.collides(player):
-            player.health -= 0.5
+            player.health -= BOSS_ATTACK
 
         if player_bullets.collides(boss):
-            boss.health -= 1
+            boss.health -= PLAYER_ATTACK
 
         enemy_bullets.step(swidth, sheight, 100)
         player_bullets.step(swidth, sheight, 100)
