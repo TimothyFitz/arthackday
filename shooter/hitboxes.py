@@ -5,7 +5,7 @@ hitboxes = {
                 "x" : -3.5,
                 "y" : 1,
             },
-            "radius" : 4,
+            "radius" : 2,
         },
     },
     
