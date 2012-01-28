@@ -19,15 +19,17 @@
     <action label="throw">
         <fireRef label="laser_head"/>
         <wait>1</wait>
-        <fireRef label="laser_stream"/>
-        <wait>2</wait>
+        <repeat>
+            <times>50</times>
+            <action>
+                <fireRef label="laser_stream"/>
+                <wait>1</wait>
+            </action>
+        </repeat>
     </action>
 
     <!-- Begin -->
     <action label="top">
-        <repeat>
-            <times>100</times>
-            <actionRef label="throw"/>
-        </repeat>
+        <actionRef label="throw"/>
     </action>
 </bulletml>

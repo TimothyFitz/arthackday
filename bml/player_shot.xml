@@ -7,8 +7,7 @@
             <tag>texture=bullets/12px-blue-round</tag>
             <direction type="absolute">90</direction>
             <speed>12</speed>
-            <bullet>
-            </bullet>
+            <bullet/>
         </fire>
         <wait>2</wait>
     </action>
