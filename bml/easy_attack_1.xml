@@ -2,10 +2,26 @@
 <!DOCTYPE bulletml SYSTEM "http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/bulletml.dtd">
 <bulletml type="horizontal" xmlns="http://www.asahi-net.or.jp/~cs8k-cyu/bulletml">
     
-    
+    <action label="miss">
+        <repeat>
+            <times>3</times>
+            <action>
+                <fire>
+                    <tag>texture=bullet_default</tag>
+                    <tag>radius=3.5</tag>
+                    <offset type="absolute">
+                        <x>-30</x>
+                    </offset>
+                    <direction type="aim">-10 + $rand*10</direction>
+                    <speed>5</speed>
+                    <bullet/>
+                </fire>
+            </action>
+        </repeat>
+    </action>
     
     <!-- Begin in this action -->
     <action label="top">
-        
+        <actionRef label="miss"/>
     </action>
 </bulletml>
