@@ -18,6 +18,8 @@ from shooter.images import Image, Text
 from shooter.controller import JoystickServer
 from shooter.texture import Texture
 
+swidth, sheight = 446*2, 240*2
+
 class RenderPass(object):
     def __init__(self):
         self.draw_by_texture = collections.defaultdict(set)
@@ -67,9 +69,14 @@ class Debounce(object):
         if self.current:
             self.current -= 1
 
+def draw_health_bar(health, y, color):
+    glBindTexture(GL_TEXTURE_2D, 0)
+    glColor4f(*(color + (0.5,)))
+    glRectf(10, y, (swidth - 10) * health, y + 20)
+    glColor3f(1,1,1)
+
 def main():
     pygame.init()
-    swidth, sheight = 446*2, 240*2
     gutil.initializeDisplay(swidth, sheight)
 
     live_dj = Dj()
@@ -102,8 +109,11 @@ def main():
         enemy_bullets.step()
         player_bullets.step()
 
-        # Health etc text
-        player.health_text.draw(pos=(100,20), width=200,height=36)
+        # Health bar
+        draw_health_bar(player.health / 100., sheight - 30, (0., 0.8, 0.))
+        draw_health_bar(.7, 10, (0.8, 0., 0.))
+        #player.health_text.draw(pos=(100,20), width=200,height=36)
+        #player.health
 
         rp = RenderPass()
         map(rp.mark_for_draw, enemy_bullets)
