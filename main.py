@@ -91,6 +91,7 @@ def main():
     done = False
 
     gun = Debounce(15)
+    laser = Debounce(60*5)
 
     while not done:
         glClear(GL_COLOR_BUFFER_BIT)
@@ -132,14 +133,19 @@ def main():
             hx, hy = joy.state.hats[0]
             player.x += hx*4
             player.y += hy*4
-        
-        if any(joy.state.buttons):
-            if gun.fire():
-                player_bullets.load("player_basic_attack.xml", source=player, target=boss)
-
-        gun.step()
 
         keys = pygame.key.get_pressed()
+        
+        if joy.state.buttons[0] or keys[pygame.K_z]:
+            if gun.fire():
+                player_bullets.load("player_basic_attack.xml", source=player, target=boss)
+        
+        if joy.state.buttons[1] or keys[pygame.K_x]:
+            if laser.fire():
+                player_bullets.load("player_laser.xml", source=player, target=boss)
+
+        gun.step()
+        laser.step()
 
         if keys[pygame.K_RIGHT]:
             player.x += 1
