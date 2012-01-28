@@ -33,10 +33,28 @@ class Player(Character):
         self.z = .99
 
         self.radius = 16
-        self.texture = Texture("player_ship", z=.8)
+        self.texture_normal = Texture("player_ship", z=.8)
+        self.texture_up = Texture("player_ship_up", z=.8)
+        self.texture_down = Texture("player_ship_down", z=.8)
+        
+        self.texture = self.texture_normal
 
         self._health_text = None
         #self._last_health = self.health
+        
+    def move(self, x, y):
+        _test_x = self.x + (x*self.vx)
+        _test_y = self.y + (y*self.vy)
+        if (y > 0):
+            self.texture = self.texture_up
+        elif (y < 0):
+            self.texture = self.texture_down
+        else:
+            self.texture = self.texture_normal
+        if (_test_x > 0 and _test_x < 848 - 200):
+            self.x = _test_x
+        if (_test_y > 0 and _test_y < 480):
+            self.y = _test_y
 
     #@property
     #def health_text(self):

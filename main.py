@@ -107,14 +107,6 @@ def draw_label(label, x, y, width, height, rotation=0):
         _texts[label] = Text(label, fontsize=256, color=(255,255,255,255))
     _texts[label].draw(pos=(x, y), width=width, height=height, rotation=rotation)
 
-    
-def move_player(player, x, y):
-    _test_x = player.x + (x*player.vx)
-    _test_y = player.y + (y*player.vy)
-    if (_test_x > 0 and _test_x < swidth - 200):
-        player.x = _test_x
-    if (_test_y > 0 and _test_y < sheight):
-        player.y = _test_y
 
 class HitBox(object):
     def __init__(self, entity, json):
@@ -368,19 +360,21 @@ def main():
             gun.step()
             laser.step()
 
+            dx, dy = 0, 0
             if joy.state.hats:
-                hx, hy = joy.state.hats[0]
-                move_player(player, hx, hy)
+                dx, dy = joy.state.hats[0]
 
             if keys[pygame.K_RIGHT]:
-                move_player(player, 1, 0)
+                dx = 1
             elif keys[pygame.K_LEFT]:
-                move_player(player, -1, 0)
-            
+                dx = -1
+                
             if keys[pygame.K_UP]:
-                move_player(player, 0, 1)
+                dy = 1
             elif keys[pygame.K_DOWN]:
-                move_player(player, 0, -1)
+                dy = -1
+            
+            player.move(dx, dy)
 
             if start_screen_visible() and (keys[pygame.K_RETURN] or joy.state.buttons and joy.state.buttons[7]) and (player.health <= 0 or boss.health <= 0):
                 player.health = 100.
