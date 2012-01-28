@@ -21,8 +21,8 @@ from shooter.texture import Texture
 from shooter.sms import MessagePoll, TWILIO_MSG_DURATION
 from shooter.hitboxes import hitboxes
 
-PLAYER_ATTACK = .1
-BOSS_ATTACK = .06
+PLAYER_ATTACK = .03
+BOSS_ATTACK = .4
 TWILIO_ATTACK = 8.
 
 SHOT_EFFECT_FRAMES = 10
@@ -199,7 +199,7 @@ def main():
         #if last_shot_step is not None and (steps - last_shot_step) % (SHOT_EFFECT_FRAMES):
         if (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
             #if steps % 3:
-            muzzle_flash.x = player.x + 62
+            muzzle_flash.x = player.x + 85
             muzzle_flash.y = player.y + 6
             if steps % 2 == 0:
                 muzzle_flash.current_texture_index += 1

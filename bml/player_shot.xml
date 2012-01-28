@@ -6,6 +6,9 @@
         <fire>
             <tag>texture=player_shot</tag>
             <tag>radius=3</tag>
+            <offset type="absolute">
+                <x>30</x>
+            </offset>
             <direction type="absolute">90</direction>
             <speed>12</speed>
             <bullet/>
