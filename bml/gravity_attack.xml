@@ -5,7 +5,7 @@
     <action label="gravity">
         <changeDirection>
             <direction type="absolute">180</direction>
-            <term>100 + $rand*25</term>
+            <term>150 + $rand*25</term>
         </changeDirection>
     </action>
     
@@ -26,7 +26,7 @@
     <!-- Begin -->
     <action label="top">
         <repeat>
-            <times>999</times>
+            <times>100</times>
             <actionRef label="throw"/>
         </repeat>
     </action>
