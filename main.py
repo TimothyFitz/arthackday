@@ -22,7 +22,7 @@ from shooter.sms import MessagePoll, TWILIO_MSG_DURATION
 from shooter.hitboxes import hitboxes
 
 PLAYER_ATTACK = .03
-BOSS_ATTACK = .7
+BOSS_ATTACK = 1.
 TWILIO_ATTACK = 10.
 
 SHOT_EFFECT_FRAMES = 10
