@@ -14,14 +14,15 @@ class MessagePoll(Thread):
         Thread.__init__(self)
         self.daemon = True
         self.messages = []
-        self.started_at = datetime.datetime.utcnow()
+        self.last_msg_at = datetime.datetime.utcnow()
 
     def run(self):
         while True:
             msgs = [msg for msg in client.sms.messages.list(to="5038226827")]
             msgs = [msg for msg in msgs if parsedate_tz(msg.date_created)
-                                           > self.started_at.timetuple()]
+                                           > self.last_msg_at.timetuple()]
             self.messages.extend([msg.body.replace('\n',' ') for msg in msgs])
+            self.last_msg_at = datetime.datetime.utcnow()
             #self.messages.append('foobarbazqaaa'*14)
             time.sleep(TWILIO_MSG_DURATION + 2)
 
