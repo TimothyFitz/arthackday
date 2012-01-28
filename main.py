@@ -251,7 +251,7 @@ def main():
         
             steps += 1
         
-            if steps % 30 == 0:
+            if steps % 120 == 0:
                 activity_level = live_dj.activity_level()
                 if activity_level:
                     enemy_bullets.load(boss_weapons[activity_level], source=boss, target=player)

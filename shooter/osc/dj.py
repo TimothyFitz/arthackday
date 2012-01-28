@@ -61,7 +61,6 @@ class DirChangeMixin(object):
         ts = time.time()
         direction = self._last_pos < pos
         if direction != self._last_dir:
-            print "change direction"
             self._dir_changes.append((ts, direction,))
         self._last_dir = direction
         self._cull_dir_changes()
