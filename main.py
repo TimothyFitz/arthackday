@@ -267,6 +267,8 @@ def main():
             last_twilio_msg_step = steps
             last_twilio_msg = msg
 
+        boss.y = math.sin(steps / 75.) * 110 + (sheight / 2)
+
         pygame.display.flip()
 
         curtime = time.time()
