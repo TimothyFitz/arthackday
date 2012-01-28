@@ -112,8 +112,6 @@ def main():
         # Health bar
         draw_health_bar(player.health / 100., sheight - 30, (0., 0.8, 0.))
         draw_health_bar(.7, 10, (0.8, 0., 0.))
-        #player.health_text.draw(pos=(100,20), width=200,height=36)
-        #player.health
 
         rp = RenderPass()
         map(rp.mark_for_draw, enemy_bullets)
@@ -129,7 +127,7 @@ def main():
         if enemy_bullets.collides(player):
             # Handle this less awkwardly
             #done = True
-            player.health -= 1
+            player.health -= 0.5
 
         enemy_bullets.cull(swidth, sheight, 100)
         player_bullets.cull(swidth, sheight, 100)
