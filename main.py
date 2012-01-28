@@ -103,6 +103,16 @@ def main():
     enemy_bullets.load("sweep_attack.xml", source=boss, target=player)
     
     player_bullets = BulletSet()
+    
+    boss_weapons = [
+        None,
+        'flower_attack.xml',
+        'gravity_attack.xml',
+        'homing_laser.xml',
+        'laser_attack.xml',
+        'spread_attack.xml',
+        'sweep_attack.xml',
+    ]
 
     steps = 0
     start = time.time()
@@ -115,6 +125,10 @@ def main():
 
     gun = Debounce(15)
     laser = Debounce(60*5)
+    
+    last_time = time.time()
+    game_tick = 1.0 / 60.0
+    time_left = 0.0
 
     # Start twilio polling
     twilio = MessagePoll()
@@ -181,58 +195,67 @@ def main():
             last_twilio_msg = msg
 
         pygame.display.flip()
+        
+        curtime = time.time()
+        time_left += curtime - last_time
+        last_time = curtime
 
-        if enemy_bullets.collides(player):
-            player.health -= BOSS_ATTACK
+        while time_left >= game_tick:
+            time_left -= game_tick
 
-        if player_bullets.collides(boss):
-            boss.health -= PLAYER_ATTACK
+            if enemy_bullets.collides(player):
+                player.health -= BOSS_ATTACK
 
-        enemy_bullets.step(swidth, sheight, 100)
-        player_bullets.step(swidth, sheight, 100)
+            if player_bullets.collides(boss):
+                boss.health -= PLAYER_ATTACK
 
-        eventlist = pygame.event.get()
-        for event in eventlist:
-            if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-                done = True
+            enemy_bullets.step(swidth, sheight, 100)
+            player_bullets.step(swidth, sheight, 100)
+
+            eventlist = pygame.event.get()
+            for event in eventlist:
+                if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                    done = True
                 
-        if joy.state.hats:
-            hx, hy = joy.state.hats[0]
-            player.x += hx*player.vx
-            player.y += hy*player.vy
+            if joy.state.hats:
+                hx, hy = joy.state.hats[0]
+                player.x += hx*player.vx
+                player.y += hy*player.vy
 
-        keys = pygame.key.get_pressed()
+            keys = pygame.key.get_pressed()
         
-        if (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
-            if gun.fire():
-                player_bullets.load("player_shot.xml", source=player, target=boss)
+            if (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
+                if gun.fire():
+                    player_bullets.load("player_shot.xml", source=player, target=boss)
         
-        if (joy.state.buttons and joy.state.buttons[1]) or keys[pygame.K_x]:
-            if laser.fire():
-                player_bullets.load("player_laser.xml", source=player, target=boss)
+            if (joy.state.buttons and joy.state.buttons[1]) or keys[pygame.K_x]:
+                if laser.fire():
+                    player_bullets.load("player_laser.xml", source=player, target=boss)
 
-        player_bullets.update_roots(player)
+            player_bullets.update_roots(player)
 
-        gun.step()
-        laser.step()
+            gun.step()
+            laser.step()
 
-        if keys[pygame.K_RIGHT]:
-            player.x += player.vx
-        elif keys[pygame.K_LEFT]:
-            player.x -= player.vx
+            if keys[pygame.K_RIGHT]:
+                player.x += player.vx
+            elif keys[pygame.K_LEFT]:
+                player.x -= player.vx
             
-        if keys[pygame.K_UP]:
-            player.y += player.vy
-        elif keys[pygame.K_DOWN]:
-            player.y -= player.vy
+            if keys[pygame.K_UP]:
+                player.y += player.vy
+            elif keys[pygame.K_DOWN]:
+                player.y -= player.vy
         
-        if keys[pygame.K_q]:
-            time.sleep(1)
+            if keys[pygame.K_q]:
+                time.sleep(1)
         
-        steps += 1
+            steps += 1
         
-        if steps % 120 == 0:
-            print "Bullets:", len(enemy_bullets), len(player_bullets)
+            if steps % 15 == 0:
+                activity_level = live_dj.activity_level()
+                if activity_level:
+                    enemy_bullets.load(boss_weapons[activity_level], source=boss, target=player)
     
     print "FPS:", steps / (time.time() - start)
 

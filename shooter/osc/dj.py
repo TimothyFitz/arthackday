@@ -59,8 +59,9 @@ class DirChangeMixin(object):
 
     def _update_dir(self, pos):
         ts = time.time()
-        direction = self._last_pos < pos 
+        direction = self._last_pos < pos
         if direction != self._last_dir:
+            print "change direction"
             self._dir_changes.append((ts, direction,))
         self._last_dir = direction
         self._cull_dir_changes()
@@ -68,7 +69,6 @@ class DirChangeMixin(object):
     def dir_changes(self):
         ''' returns the # of direction changes in the last N seconds. '''
         self._cull_dir_changes()
-        print "dir changes:", len(self._dir_changes)
         return len(self._dir_changes)
 
     def activity_level(self):
@@ -115,7 +115,7 @@ class DjSnapshot(object):
         self.left  = copy(dj.left)
         self.right = copy(dj.right)
         self.fader = copy(dj.fader)
-
+        self.level = dj.activity_level()
 
 class Dj(object):
     def __init__(self):
@@ -131,7 +131,7 @@ class Dj(object):
 
     def activity_level(self):
         level = self.right.activity_level() + self.fader.activity_level()
-        return int(level * DJ_DIFFICULTY)
+        return int(level * config.DJ_DIFFICULTY)
 
 
 def main():
