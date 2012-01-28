@@ -154,6 +154,8 @@ def main():
             if laser.fire():
                 player_bullets.load("player_laser.xml", source=player, target=boss)
 
+        player_bullets.update_roots(player)
+
         gun.step()
         laser.step()
 

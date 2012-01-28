@@ -4,7 +4,7 @@ from shooter.texture import Texture
 
 
 class MyBullet(Bullet):
-    def __init__(self, radius=8, **kwargs):
+    def __init__(self, radius=8, root=False, **kwargs):
         Bullet.__init__(self, radius=radius, **kwargs)
         for tag in self.tags:
             if tag.startswith("texture="):
@@ -12,10 +12,17 @@ class MyBullet(Bullet):
                 break
         else:
             self.texture = None
+        self.root = root
 
 class BulletSet(object):
     def __init__(self):
         self.bullets = set()
+    
+    def update_roots(self, entity):
+        for bullet in self:
+            if bullet.root:
+                bullet.x = entity.x
+                bullet.y = entity.y
 
     def step(self):
         new_bullets = set()
@@ -38,7 +45,9 @@ class BulletSet(object):
                 bullet.finished = True
 
     def load(self, filename, source, target, rank=0.5):
-        self.bullets.add(MyBullet.FromDocument(BulletML.FromDocument(open("bml/" + filename, "rU")), source.x, source.y, target=target, rank=rank))
+        bullet = MyBullet.FromDocument(BulletML.FromDocument(open("bml/" + filename, "rU")), source.x, source.y, target=target, rank=rank)
+        bullet.root = True
+        self.bullets.add(bullet)
 
     def __iter__(self):
         return iter(self.bullets)
