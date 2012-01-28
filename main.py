@@ -76,6 +76,12 @@ def draw_health_bar(health, y, color):
     glRectf(10, y, (swidth - 10) * health, y + 20)
     glColor3f(1,1,1)
 
+_texts = {}
+def draw_label(label, x, y, width, height):
+    _texts[label] = _texts.get(label,
+                               Text(label, fontsize=256, color=(255,255,255,255)))
+    _texts[label].draw(pos=(x, y), width=width, height=height)
+
 def main():
     pygame.init()
     gutil.initializeDisplay(swidth, sheight)
@@ -110,9 +116,17 @@ def main():
         glPointSize(10)
         glLoadIdentity()
 
-        # Health bar
+        # Health bars.
         draw_health_bar(player.health / 100., sheight - 30, (0., 0.8, 0.))
         draw_health_bar(boss.health / 100., 10, (0.8, 0., 0.))
+        draw_label("PLAYER", 15, sheight - 29, 52, 16)
+        draw_label("BOSS", 15, 11, 34, 16)
+
+        # Twilio.
+        TWILIO_WIDTH = (210, 260,)
+        draw_label("Tired of this DJ? Shoot him.",
+                   swidth - TWILIO_WIDTH[0] - 10, 60, TWILIO_WIDTH[0], 16)
+        draw_label("TEXT  (503) 8-CANVAS", swidth - TWILIO_WIDTH[1] - 10, 34, TWILIO_WIDTH[1], 23)
 
         rp = RenderPass()
         map(rp.mark_for_draw, enemy_bullets)
