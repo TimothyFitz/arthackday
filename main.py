@@ -8,6 +8,7 @@ from OpenGL.GL import *
 from OpenGL.arrays import vbo
 from numpy import array
 from pygame.locals import *
+import random
 import gutil
 import pygame
 import pygame.mouse
@@ -390,9 +391,10 @@ def main():
         
             if not start_screen_visible() and steps % 15 == 0:
                 activity_level = live_dj.activity_level()
+                _rand = random.random()
                 if activity_level:
                     enemy_bullets.load(boss_weapons[activity_level], source=boss, target=player)
-                else:
+                elif _rand > 0.7:
                     enemy_bullets.load(boss_weapons[1], source=boss, target=player)
     
     print "FPS:", steps / (time.time() - start)

@@ -7,7 +7,7 @@
             <times>8</times>
             <action>
                 <fire>
-                    <tag>texture=bullet_default</tag>
+                    <tag>texture=bullet_fast</tag>
                     <tag>radius=3.5</tag>
                     <direction type="sequence">40</direction>
                     <speed>5</speed>
@@ -38,7 +38,7 @@
                 <times>10</times>
                 <action>
                     <fire>
-                        <tag>texture=bullet_default</tag>
+                        <tag>texture=bullet_mean</tag>
                         <tag>radius=3.5</tag>
                         <direction type="sequence">20</direction>
                         <bullet/>
@@ -56,10 +56,10 @@
             <bullet/>
         </fire>
         <repeat>
-            <times>5</times>
+            <times>3</times>
             <action>
                 <fire>
-                    <direction type="sequence">10</direction>
+                    <direction type="sequence">20</direction>
                     <bulletRef label="flower"/>
                 </fire>
                 <wait>5</wait>
