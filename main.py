@@ -380,6 +380,7 @@ def main():
             player.move(dx, dy)
 
             if start_screen_visible() and (keys[pygame.K_RETURN] or joy.state.buttons and joy.state.buttons[7]) and (player.health <= 0 or boss.health <= 0):
+                enemy_bullets.clear()
                 player.health = 100.
                 boss.health = 100.
                 last_game_over = None

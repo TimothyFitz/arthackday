@@ -74,9 +74,7 @@ class DirChangeMixin(object):
         #print self, self.dir_changes()
         for level, changes_per_s in enumerate([v*config.DJ_DIFFICULTY for v in config.DIR_CHANGE_BUCKETS]):
             if self.dir_changes() / float(config.DIR_CHANGE_SECONDS) < changes_per_s:
-                print level
                 return level
-        print level+1
         return level + 1
 
 
