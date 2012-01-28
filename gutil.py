@@ -7,7 +7,7 @@ from OpenGL.GLU import *
 def initializeDisplay(w, h):
     pygame.display.set_mode((w,h), pygame.OPENGL|pygame.DOUBLEBUF)
 
-    glClearColor(0.0, 0.0, 0.0, 1.0)
+    glClearColor(0.0, 0.0, 0.0, 0.0)
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
     glMatrixMode(GL_PROJECTION);
@@ -19,6 +19,13 @@ def initializeDisplay(w, h):
     glEnable(GL_TEXTURE_2D)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+    """
+    Can't get this to not glitch out:
+    glEnable(GL_DEPTH_TEST)
+    glDepthFunc(GL_LEQUAL)
+    glClearDepth(2)
+    """
 
 def loadImage(image):
     textureSurface = pygame.image.load(image)

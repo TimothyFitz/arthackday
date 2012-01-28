@@ -105,7 +105,7 @@ def main():
     laser = Debounce(60*5)
 
     while not done:
-        glClear(GL_COLOR_BUFFER_BIT)
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         glColor3f(1,1,1)
         glPointSize(10)
         glLoadIdentity()
@@ -126,8 +126,6 @@ def main():
         pygame.display.flip()
 
         if enemy_bullets.collides(player):
-            # Handle this less awkwardly
-            #done = True
             player.health -= 0.5
 
         if player_bullets.collides(boss):
