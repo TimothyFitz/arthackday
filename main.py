@@ -21,8 +21,8 @@ from shooter.texture import Texture
 from shooter.sms import MessagePoll, TWILIO_MSG_DURATION
 from shooter.hitboxes import hitboxes
 
-PLAYER_ATTACK = .5
-BOSS_ATTACK = .7
+PLAYER_ATTACK = .3
+BOSS_ATTACK = .2
 TWILIO_ATTACK = 8.
 
 SHOT_EFFECT_FRAMES = 5
@@ -203,9 +203,17 @@ def main():
                 flame.current_texture_index = 0
         flame.texture = flame.textures[flame.current_texture_index]
 
-        rp.mark_for_draw(player)
-        rp.mark_for_draw(flame)
-        rp.mark_for_draw(boss)
+        if boss.health > 0:
+            rp.mark_for_draw(boss)
+        else:
+            draw_label('YOU KILLED THE DJ', swidth / 2 - 150, sheight / 2, 300, 40)
+
+        if player.health > 0:
+            rp.mark_for_draw(player)
+            rp.mark_for_draw(flame)
+        else:
+            draw_label('GAME OVER', swidth / 2 - 100, sheight / 2, 200, 50)
+
 
         rp.render()
 
@@ -299,6 +307,10 @@ def main():
                 player.y += player.vy
             elif keys[pygame.K_DOWN]:
                 player.y -= player.vy
+
+            if keys[pygame.K_RETURN] and (player.health <= 0 or boss.health <= 0):
+                player.health = 100.
+                boss.health = 100.
         
             if keys[pygame.K_q]:
                 time.sleep(1)
