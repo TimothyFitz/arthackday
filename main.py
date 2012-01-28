@@ -100,8 +100,7 @@ def main():
     player = Player()  # On your own here, but it needs x and y fields.
     boss = Boss()
     enemy_bullets = BulletSet()
-    enemy_bullets.load("sweep_attack.xml", source=boss, target=player)
-    
+
     player_bullets = BulletSet()
     
     boss_weapons = [
@@ -252,7 +251,7 @@ def main():
         
             steps += 1
         
-            if steps % 15 == 0:
+            if steps % 30 == 0:
                 activity_level = live_dj.activity_level()
                 if activity_level:
                     enemy_bullets.load(boss_weapons[activity_level], source=boss, target=player)
