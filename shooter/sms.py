@@ -22,7 +22,8 @@ class MessagePoll(Thread):
             msgs = [msg for msg in msgs if parsedate_tz(msg.date_created)
                                            > self.last_msg_at.timetuple()]
             self.messages.extend([msg.body.replace('\n',' ') for msg in msgs])
-            self.last_msg_at = datetime.datetime.utcnow()
+            if self.messages:
+                self.last_msg_at = datetime.datetime.utcnow()
             #self.messages.append('foobarbazqaaa'*14)
             time.sleep(TWILIO_MSG_DURATION + 2)
 
