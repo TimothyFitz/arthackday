@@ -93,8 +93,6 @@ def main():
         td = (current_dj.right.pos - last_dj.right.pos).total_seconds() # - (current_time - last_time)
         d = td * V
 
-        print td, d
-        
         bullets.root.x += d
         if bullets.root.x < 0:
             bullets.root.x = 0
