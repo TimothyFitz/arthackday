@@ -18,7 +18,9 @@ from shooter.controller import JoystickServer
 
 
 def main():
-    player = Player()  # On your own here, but it needs x and y fields.
+    live_dj = Dj()
+
+    player = Player(live_dj)  # On your own here, but it needs x and y fields.
     player.x = 50
     player.y = 300
     bullets = BulletSet.load("gravity_attack.xml", (750,300), target=player)
@@ -37,7 +39,6 @@ def main():
 
     step = 1
 
-    live_dj = Dj()
     
     last_dj = live_dj.snapshot()
     last_time = time.time()
@@ -56,6 +57,8 @@ def main():
         td = (current_dj.right.pos - last_dj.right.pos).total_seconds() # - (current_time - last_time)
         d = td * V
 
+        print td, d
+        
         bullets.root.x += d
         if bullets.root.x < 0:
             bullets.root.x = 0
@@ -90,7 +93,7 @@ def main():
 
         cow.draw((player.x, player.y))
         pygame.display.flip()
-        
+
         if bullets.collides(player):
             # Handle this less awkwardly
             #done = True

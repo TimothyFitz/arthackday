@@ -50,7 +50,7 @@ class BaseOscServer(object):
 
         for device, name in [('record', 'left',), 
                              ('record', 'right',),
-                             ('mixer',  'crossfader',),]:
+                             ('mixer',  'fader',),]:
             path = '/scratch/{0}/{1}'.format(device, name)
             method = getattr(self, '_' + name)
             self._server.add_method(path, 'f', method)
@@ -59,18 +59,18 @@ class BaseOscServer(object):
 
     @transform(ms_transform)
     def _left(self, pos):
-        log.info('left: ' + str(pos))
+        #log.info('left: ' + str(pos))
         self.left(pos)
 
     @transform(ms_transform)
     def _right(self, pos):
-        log.info('right: ' + str(pos))
+        #log.info('right: ' + str(pos))
         self.right(pos)
 
     @transform(Fader)
-    def _crossfader(self, pos):
+    def _fader(self, fader):
         log.info('fader: {0}, {1}'.format(fader.left, fader.right))
-        self.fader(pos)
+        self.fader(fader)
 
     def left(self, pos):
         ''' Absolute position in ms. '''
