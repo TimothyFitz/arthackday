@@ -171,9 +171,10 @@ def main():
                 draw_label(m, x, y, w, 23, rotation=rot)
                 offset += line_len
         else:
+            if last_twilio_msg is not None:
+                boss.health -= TWILIO_ATTACK
             last_twilio_msg_step = 0
             last_twilio_msg = None
-            boss.health -= TWILIO_ATTACK
         if steps % 60 == 0 and twilio.messages:
             msg = twilio.messages.pop()
             last_twilio_msg_step = steps

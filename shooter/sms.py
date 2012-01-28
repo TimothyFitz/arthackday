@@ -21,7 +21,7 @@ class MessagePoll(Thread):
             msgs = [msg for msg in client.sms.messages.list(to="5038226827")]
             msgs = [msg for msg in msgs if parsedate_tz(msg.date_created)
                                            > self.started_at.timetuple()]
-            self.messages.extend([msg.body for msg in msgs])
+            self.messages.extend([msg.body.replace('\n',' ') for msg in msgs])
             #self.messages.append('foobarbazqaaa'*14)
             time.sleep(TWILIO_MSG_DURATION + 2)
 
