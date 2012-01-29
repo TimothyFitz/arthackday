@@ -348,12 +348,12 @@ def main():
                 if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                     done = True
         
-            if player.health > 0 and (joy.state.buttons and joy.state.buttons[0]) or keys[pygame.K_z]:
+            if player.health > 0 and (joy.state.buttons and joy.state.buttons[0] or joy.state.buttons[8] or joy.state.buttons[9]) or keys[pygame.K_z]:
                 if gun.fire():
                     player_bullets.load("player_shot.xml", source=player, target=boss)
                     last_shot_step = steps
-        
-            if player.health > 0 and (joy.state.buttons and joy.state.buttons[1]) or keys[pygame.K_x]:
+
+            if player.health > 0 and (joy.state.buttons and joy.state.buttons[1] or joy.state.buttons[2] or joy.state.buttons[3]) or keys[pygame.K_x]:
                 if laser.fire():
                     player_bullets.load("player_laser.xml", source=player, target=boss)
 
