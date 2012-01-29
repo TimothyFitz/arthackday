@@ -253,7 +253,8 @@ def main():
         rp.render()
 
         if start_screen_visible():
-            pass
+            enemy_bullets.clear()
+            player_bullets.clear()
         elif boss.health <= 0:
             draw_label('YOU KILLED THE DJ', swidth / 2 - 150, sheight / 2, 300, 40)
             if last_game_over is None:
